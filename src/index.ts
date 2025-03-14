@@ -43,6 +43,32 @@ const outlineClient = axios.create({
   }
 });
 
+// Define types for Outline API
+type Collection = {
+  id: string;
+  name: string;
+  description?: string;
+  icon?: string;
+};
+
+type Document = {
+  id: string;
+  title: string;
+  text: string;
+  emoji?: string;
+  collectionId: string;
+  parentDocumentId?: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  url: string;
+};
+
+type Team = {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+};
 
 // Define argument types for tools
 type ListDocumentsArgs = {
@@ -88,6 +114,12 @@ type ListTeamsArgs = {
   limit?: number;
 };
 
+type SearchDocumentsArgs = {
+  query: string;
+  collectionId?: string;
+  limit?: number;
+};
+
 const server = new Server(
   {
     name: "outline-mcp",
@@ -104,6 +136,7 @@ const server = new Server(
         list_collections: true,
         get_collection: true,
         list_teams: true,
+        search_documents: true,
       },
     },
   }
@@ -241,6 +274,27 @@ async function handleListTeams(args: ListTeamsArgs) {
     return response.data.data || [];
   } catch (error: any) {
     console.error('Error listing teams:', error.message);
+    throw new McpError(ErrorCode.InvalidRequest, error.message);
+  }
+}
+
+async function handleSearchDocuments(args: SearchDocumentsArgs) {
+  try {
+    const params: Record<string, any> = {
+      query: args.query,
+    };
+    
+    if (args.collectionId) {
+      params.collectionId = args.collectionId;
+    }
+    if (args.limit) {
+      params.limit = args.limit;
+    }
+
+    const response = await outlineClient.get('/documents/search', { params });
+    return response.data.data || [];
+  } catch (error: any) {
+    console.error('Error searching documents:', error.message);
     throw new McpError(ErrorCode.InvalidRequest, error.message);
   }
 }
@@ -401,6 +455,28 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         type: "object",
       },
     },
+    {
+      name: "search_documents",
+      description: "Search for documents across the Outline workspace",
+      inputSchema: {
+        properties: {
+          query: { 
+            type: "string", 
+            description: "Search query to find documents" 
+          },
+          collectionId: { 
+            type: "string", 
+            description: "Filter search to a specific collection (optional)" 
+          },
+          limit: { 
+            type: "number", 
+            description: "Maximum number of results to return (optional)" 
+          },
+        },
+        required: ["query"],
+        type: "object",
+      },
+    },
   ]
 }));
 
@@ -435,6 +511,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         break;
       case "list_teams":
         result = await handleListTeams(parameters as ListTeamsArgs);
+        break;
+      case "search_documents":
+        result = await handleSearchDocuments(parameters as SearchDocumentsArgs);
         break;
       default:
         return { error: { code: ErrorCode.InvalidRequest, message: `Tool ${tool} not supported` } };
