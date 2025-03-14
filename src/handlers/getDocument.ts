@@ -1,8 +1,23 @@
 import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
 import { outlineClient } from "../client.js";
 import { GetDocumentArgs } from "../types.js";
+import { registerTool } from "../utils/listTools.js";
 
-export async function handleGetDocument(args: GetDocumentArgs) {
+// Register this tool
+registerTool({
+  name: "get_document",
+  description: "Get details about a specific document",
+  inputSchema: {
+    properties: {
+      documentId: { 
+        type: "string", 
+        description: "ID of the document to retrieve" 
+      },
+    },
+    required: ["documentId"],
+    type: "object",
+  },
+}, async function handleGetDocument(args: GetDocumentArgs) {
   try {
     const response = await outlineClient.get(`/documents/${args.documentId}`);
     return response.data.data;
@@ -10,4 +25,4 @@ export async function handleGetDocument(args: GetDocumentArgs) {
     console.error('Error getting document:', error.message);
     throw new McpError(ErrorCode.InvalidRequest, error.message);
   }
-} 
+}); 

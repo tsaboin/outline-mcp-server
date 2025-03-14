@@ -1,9 +1,10 @@
-export { handleListDocuments } from './listDocuments.js';
-export { handleGetDocument } from './getDocument.js';
-export { handleCreateDocument } from './createDocument.js';
-export { handleUpdateDocument } from './updateDocument.js';
-export { handleDeleteDocument } from './deleteDocument.js';
-export { handleListCollections } from './listCollections.js';
-export { handleGetCollection } from './getCollection.js';
-export { handleListTeams } from './listTeams.js';
-export { handleSearchDocuments } from './searchDocuments.js'; 
+// Import all handler modules to register tools
+import './listDocuments.js';
+import './getDocument.js';
+import './createDocument.js';
+import './updateDocument.js';
+import './deleteDocument.js';
+import './listCollections.js';
+import './getCollection.js';
+import './listTeams.js';
+import './searchDocuments.js'; 
