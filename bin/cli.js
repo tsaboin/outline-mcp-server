@@ -22,6 +22,13 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
+// Check for required environment variable
+if (!process.env.OUTLINE_API_KEY) {
+  console.error('\x1b[31mError: OUTLINE_API_KEY environment variable is required but not set.\x1b[0m');
+  console.error('Please set this environment variable before running the server.');
+  process.exit(1);
+}
+
 // Path to the built index.js file
 const serverPath = resolve(__dirname, '../build/index.js');
 
