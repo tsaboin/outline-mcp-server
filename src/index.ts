@@ -1,13 +1,5 @@
 #!/usr/bin/env node
 
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-import { config } from "dotenv";
-
-// Load .env file from the project root
-const __dirname = dirname(fileURLToPath(import.meta.url));
-config({ path: join(__dirname, "..", ".env") });
-
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -21,15 +13,15 @@ import {
 import { getToolDefinitions, getToolHandlers } from "./utils/listTools.js";
 
 // Import all handlers to ensure tool definitions are registered
-import "./tools/listDocuments.js";
-import "./tools/getDocument.js";
 import "./tools/createDocument.js";
-import "./tools/updateDocument.js";
 import "./tools/deleteDocument.js";
-import "./tools/listCollections.js";
 import "./tools/getCollection.js";
+import "./tools/getDocument.js";
+import "./tools/listCollections.js";
+import "./tools/listDocuments.js";
 import "./tools/listTeams.js";
 import "./tools/searchDocuments.js";
+import "./tools/updateDocument.js";
 
 // Build the capabilities object dynamically from registered tools
 const toolsCapabilities: Record<string, boolean> = {};

@@ -68,11 +68,11 @@ cd outline-mcp
 # Install dependencies
 npm install
 
-# Build the project
-npm run build
+# Run the project as an SSE server endpoint 
+npm run start
 
-# Run in development mode
-npm start
+# Run the project as an stdio process
+npm run start:stdio
 ```
 
 ## License
