@@ -1,13 +1,14 @@
 {
   "name": "outline-mcp-server",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "description": "An MCP server for interacting with Outline's API",
   "type": "module",
   "bin": {
-    "outline-mcp-server": "npm run start"
+    "outline-mcp-server": "./bin/cli.js"
   },
   "files": [
-    "build"
+    "build",
+    "bin"
   ],
   "author": {
     "name": "Matt Frey",
@@ -18,7 +19,7 @@
     "url": "https://github.com/mmmeff/outline-mcp-server"
   },
   "scripts": {
-    "build": "tsc && chmod +x build/index.js",
+    "build": "tsc && chmod +x build/index.js && chmod +x bin/cli.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js",
