@@ -1,6 +1,6 @@
 {
   "name": "outline-mcp-server",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "An MCP server for interacting with Outline's API",
   "type": "module",
   "bin": {
@@ -12,6 +12,10 @@
   "author": {
     "name": "Matt Frey",
     "email": "iam@mattfrey.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmmeff/outline-mcp-server"
   },
   "scripts": {
     "build": "tsc && chmod +x build/index.js",
