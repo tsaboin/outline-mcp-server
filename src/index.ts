@@ -21,15 +21,15 @@ import {
 import { getToolDefinitions, getToolHandlers } from "./utils/listTools.js";
 
 // Import all handlers to ensure tool definitions are registered
-import "./handlers/listDocuments.js";
-import "./handlers/getDocument.js";
-import "./handlers/createDocument.js";
-import "./handlers/updateDocument.js";
-import "./handlers/deleteDocument.js";
-import "./handlers/listCollections.js";
-import "./handlers/getCollection.js";
-import "./handlers/listTeams.js";
-import "./handlers/searchDocuments.js";
+import "./tools/listDocuments.js";
+import "./tools/getDocument.js";
+import "./tools/createDocument.js";
+import "./tools/updateDocument.js";
+import "./tools/deleteDocument.js";
+import "./tools/listCollections.js";
+import "./tools/getCollection.js";
+import "./tools/listTeams.js";
+import "./tools/searchDocuments.js";
 
 // Build the capabilities object dynamically from registered tools
 const toolsCapabilities: Record<string, boolean> = {};
