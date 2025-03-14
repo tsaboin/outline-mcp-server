@@ -8,6 +8,20 @@ import { dirname, resolve } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Parse command line arguments
+const args = process.argv.slice(2);
+let port = 6060; // Default port
+
+// Parse --port argument
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--port' && i + 1 < args.length) {
+    port = parseInt(args[i + 1], 10);
+    // Remove these arguments so they don't get passed to supergateway
+    args.splice(i, 2);
+    i--;
+  }
+}
+
 // Path to the built index.js file
 const serverPath = resolve(__dirname, '../build/index.js');
 
@@ -16,7 +30,7 @@ const gateway = spawn('npx', [
   '-y',
   'supergateway',
   '--port',
-  '6060',
+  port.toString(),
   '--stdio',
   `node ${serverPath}`
 ], {

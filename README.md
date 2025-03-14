@@ -38,11 +38,17 @@ OUTLINE_API_KEY=… npx outline-mcp-server
 # or install from npm
 npm install -g outline-mcp-server
 OUTLINE_API_KEY=… outline-mcp-server
+
+# Run with a custom port (default is 6060)
+OUTLINE_API_KEY=… outline-mcp-server --port 7070
 ```
 
 ### Env
 - `OUTLINE_API_KEY` (*required*): your API key for outline, duh
 - `OUTLINE_BASE_URL` (*optional*): Alternative URL for your outline API (if using an alt domain/self-hosting)
+
+### CLI Options
+- `--port <number>` (*optional*): Specify the port on which the server will run (default: 6060)
 
 ### Usage
 
