@@ -26,9 +26,11 @@ const gateway = spawn('npx', [
 
 // Handle process exit
 process.on('SIGINT', () => {
+  console.log('SIGINT received, killing outline-mcp-server');
   gateway.kill('SIGINT');
 });
 
 gateway.on('close', (code) => {
+  console.log('outline-mcp-server exited with code', code);
   process.exit(code);
 }); 
