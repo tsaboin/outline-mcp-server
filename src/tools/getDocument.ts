@@ -11,12 +11,8 @@ registerTool({
     properties: {
       id: { 
         type: "string", 
-        description: "ID of the document to retrieve" 
+        description: "Unique identifier for the document. Either the UUID or the urlId is acceptable" 
       },
-      shareId: {
-        type: "string",
-        description: "Share ID (urlId) of the document to retrieve"
-      }
     },
     type: "object",
   },

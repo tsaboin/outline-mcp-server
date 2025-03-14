@@ -68,7 +68,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
     // Call the handler with the provided parameters
     const result = await handler(parameters);
-    return { result };
+    return { 
+      content: [
+        { type: "text", text: JSON.stringify(result, null, 2) }
+      ]
+    };
   } catch (error) {
     if (error instanceof McpError) {
       return { error: { code: error.code, message: error.message } };
