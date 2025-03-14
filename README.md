@@ -1,6 +1,6 @@
 # Outline MCP Server
 
-A Model Context Protocol (MCP) server that provides tools for interacting with Outline's API, enabling AI agents to manage documents, collections, and other entities programmatically through the Outline knowledge base platform.
+A Model Context Protocol (MCP) server that provides tools for interacting with [Outline](https://www.getoutline.com/)'s API, enabling AI agents to manage documents, collections, and other entities programmatically through the Outline knowledge base platform.
 
 ## Features
 
