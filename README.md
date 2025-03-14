@@ -5,20 +5,21 @@ A Model Context Protocol (MCP) server that provides tools for interacting with O
 ## Features
 
 - **Document Management**
-  - Create new documents with customizable properties
-  - Get document details
-  - Update existing documents
-  - Delete documents
-  - List documents
+  - ✅ Create new documents with customizable properties
+  - ✅ Get document details
+  - ✅ Update existing documents
+  - ✅ Delete documents
+  - ✅ List documents
+  - ✅ Search documents
 
 - **Collection Management**
-  - Get collection details
-  - List collections
-  - Create and update collections
+  - ✅ Get collection details
+  - ✅ List collections
+  - ✅ Create and update collections
 
 - **Team Management**
-  - List teams/groups
-  - Get team/group details
+  - ✅ List teams/groups
+  - ✅ Get team/group details
 
 ## Prerequisites
 
@@ -31,21 +32,17 @@ A Model Context Protocol (MCP) server that provides tools for interacting with O
 ### Installation
 
 ```bash
-# Install from npm
-npm install -g outline-mcp
+# Run directly with npx
+OUTLINE_API_KEY=… npx outline-mcp-server
 
-# Or run directly with npx
-npx outline-mcp
+# or install from npm
+npm install -g outline-mcp-server
+OUTLINE_API_KEY=… outline-mcp-server
 ```
 
-### Setup
-
-1. Create a `.env` file with your Outline API key:
-
-```
-OUTLINE_API_KEY=your_outline_api_key_here
-OUTLINE_BASE_URL=https://your-outline-instance.com/api  # Optional, defaults to https://app.getoutline.com/api
-```
+### Env
+- `OUTLINE_API_KEY` (*required*): your API key for outline, duh
+- `OUTLINE_BASE_URL` (*optional*): Alternative URL for your outline API (if using an alt domain/self-hosting)
 
 ### Usage
 
@@ -67,7 +64,16 @@ cd outline-mcp
 
 # Install dependencies
 npm install
+```
 
+### Create a `.env` file with your Outline API key:
+
+```
+OUTLINE_API_KEY=your_outline_api_key_here
+OUTLINE_BASE_URL=https://your-outline-instance.com/api  # Optional, defaults to https://app.getoutline.com/api
+```
+
+```bash
 # Run the project as an SSE server endpoint 
 npm run start
 
