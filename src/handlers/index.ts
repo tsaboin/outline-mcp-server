@@ -1,0 +1,9 @@
+export { handleListDocuments } from './listDocuments.js';
+export { handleGetDocument } from './getDocument.js';
+export { handleCreateDocument } from './createDocument.js';
+export { handleUpdateDocument } from './updateDocument.js';
+export { handleDeleteDocument } from './deleteDocument.js';
+export { handleListCollections } from './listCollections.js';
+export { handleGetCollection } from './getCollection.js';
+export { handleListTeams } from './listTeams.js';
+export { handleSearchDocuments } from './searchDocuments.js'; 

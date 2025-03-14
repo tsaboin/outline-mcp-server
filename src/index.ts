@@ -16,109 +16,32 @@ import {
   ListToolsRequestSchema,
   McpError,
 } from "@modelcontextprotocol/sdk/types.js";
-import axios from "axios";
 
-const API_KEY = process.env.OUTLINE_API_KEY;
-const BASE_URL = process.env.OUTLINE_BASE_URL || "https://app.getoutline.com/api";
+// Import handlers
+import {
+  handleListDocuments,
+  handleGetDocument,
+  handleCreateDocument,
+  handleUpdateDocument,
+  handleDeleteDocument,
+  handleListCollections,
+  handleGetCollection,
+  handleListTeams,
+  handleSearchDocuments
+} from "./handlers/index.js";
 
-if (!API_KEY) {
-  console.error("Error: OUTLINE_API_KEY environment variable is required");
-  console.error("");
-  console.error("To use this tool, run it with your Outline API key:");
-  console.error("OUTLINE_API_KEY=your-api-key npx outline-mcp");
-  console.error("");
-  console.error("Or set it in your environment:");
-  console.error("export OUTLINE_API_KEY=your-api-key");
-  console.error("npx outline-mcp");
-  process.exit(1);
-}
-
-// Create an Axios instance for the Outline API
-const outlineClient = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${API_KEY}`,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  }
-});
-
-// Define types for Outline API
-type Collection = {
-  id: string;
-  name: string;
-  description?: string;
-  icon?: string;
-};
-
-type Document = {
-  id: string;
-  title: string;
-  text: string;
-  emoji?: string;
-  collectionId: string;
-  parentDocumentId?: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt?: string;
-  url: string;
-};
-
-type Team = {
-  id: string;
-  name: string;
-  avatarUrl?: string;
-};
-
-// Define argument types for tools
-type ListDocumentsArgs = {
-  collectionId?: string;
-  query?: string;
-  limit?: number;
-};
-
-type GetDocumentArgs = {
-  documentId: string;
-};
-
-type CreateDocumentArgs = {
-  title: string;
-  text: string;
-  collectionId: string;
-  parentDocumentId?: string;
-  publish?: boolean;
-  template?: boolean;
-};
-
-type UpdateDocumentArgs = {
-  documentId: string;
-  title?: string;
-  text?: string;
-  publish?: boolean;
-  done?: boolean;
-};
-
-type DeleteDocumentArgs = {
-  documentId: string;
-};
-
-type ListCollectionsArgs = {
-  limit?: number;
-};
-
-type GetCollectionArgs = {
-  collectionId: string;
-};
-
-type ListTeamsArgs = {
-  limit?: number;
-};
-
-type SearchDocumentsArgs = {
-  query: string;
-  collectionId?: string;
-  limit?: number;
-};
+// Import types
+import {
+  CreateDocumentArgs,
+  DeleteDocumentArgs,
+  GetCollectionArgs,
+  GetDocumentArgs,
+  ListCollectionsArgs,
+  ListDocumentsArgs,
+  ListTeamsArgs,
+  SearchDocumentsArgs,
+  UpdateDocumentArgs
+} from "./types.js";
 
 const server = new Server(
   {
@@ -141,163 +64,6 @@ const server = new Server(
     },
   }
 );
-
-// Implement tool handlers
-async function handleListDocuments(args: ListDocumentsArgs) {
-  try {
-    const params: Record<string, any> = {};
-    
-    if (args.collectionId) {
-      params.collectionId = args.collectionId;
-    }
-    if (args.query) {
-      params.query = args.query;
-    }
-    if (args.limit) {
-      params.limit = args.limit;
-    }
-
-    const response = await outlineClient.get('/documents', { params });
-    return response.data.data || [];
-  } catch (error: any) {
-    console.error('Error listing documents:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleGetDocument(args: GetDocumentArgs) {
-  try {
-    const response = await outlineClient.get(`/documents/${args.documentId}`);
-    return response.data.data;
-  } catch (error: any) {
-    console.error('Error getting document:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleCreateDocument(args: CreateDocumentArgs) {
-  try {
-    const payload: Record<string, any> = {
-      title: args.title,
-      text: args.text,
-      collectionId: args.collectionId,
-    };
-
-    if (args.parentDocumentId) {
-      payload.parentDocumentId = args.parentDocumentId;
-    }
-    if (args.publish !== undefined) {
-      payload.publish = args.publish;
-    }
-    if (args.template !== undefined) {
-      payload.template = args.template;
-    }
-
-    const response = await outlineClient.post('/documents', payload);
-    return response.data.data;
-  } catch (error: any) {
-    console.error('Error creating document:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleUpdateDocument(args: UpdateDocumentArgs) {
-  try {
-    const payload: Record<string, any> = {};
-
-    if (args.title !== undefined) {
-      payload.title = args.title;
-    }
-    if (args.text !== undefined) {
-      payload.text = args.text;
-    }
-    if (args.publish !== undefined) {
-      payload.publish = args.publish;
-    }
-    if (args.done !== undefined) {
-      payload.done = args.done;
-    }
-
-    const response = await outlineClient.patch(`/documents/${args.documentId}`, payload);
-    return response.data.data;
-  } catch (error: any) {
-    console.error('Error updating document:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleDeleteDocument(args: DeleteDocumentArgs) {
-  try {
-    const response = await outlineClient.delete(`/documents/${args.documentId}`);
-    return response.data.data || { success: true };
-  } catch (error: any) {
-    console.error('Error deleting document:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleListCollections(args: ListCollectionsArgs) {
-  try {
-    const params: Record<string, any> = {};
-    
-    if (args.limit) {
-      params.limit = args.limit;
-    }
-
-    const response = await outlineClient.get('/collections', { params });
-    return response.data.data || [];
-  } catch (error: any) {
-    console.error('Error listing collections:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleGetCollection(args: GetCollectionArgs) {
-  try {
-    const response = await outlineClient.get(`/collections/${args.collectionId}`);
-    return response.data.data;
-  } catch (error: any) {
-    console.error('Error getting collection:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleListTeams(args: ListTeamsArgs) {
-  try {
-    const params: Record<string, any> = {};
-    
-    if (args.limit) {
-      params.limit = args.limit;
-    }
-
-    const response = await outlineClient.get('/teams', { params });
-    return response.data.data || [];
-  } catch (error: any) {
-    console.error('Error listing teams:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
-
-async function handleSearchDocuments(args: SearchDocumentsArgs) {
-  try {
-    const params: Record<string, any> = {
-      query: args.query,
-    };
-    
-    if (args.collectionId) {
-      params.collectionId = args.collectionId;
-    }
-    if (args.limit) {
-      params.limit = args.limit;
-    }
-
-    const response = await outlineClient.get('/documents/search', { params });
-    return response.data.data || [];
-  } catch (error: any) {
-    console.error('Error searching documents:', error.message);
-    throw new McpError(ErrorCode.InvalidRequest, error.message);
-  }
-}
 
 // Register request handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
