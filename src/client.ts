@@ -13,6 +13,8 @@ if (!API_KEY) {
   throw new Error("OUTLINE_API_KEY environment variable is required");
 }
 
+console.log('Connecting to API URL:', API_URL)
+
 // Create axios client with authentication
 export const outlineClient = axios.create({
   baseURL: API_URL,
