@@ -1,0 +1,38 @@
+{
+  "name": "outline-mcp",
+  "version": "1.0.0",
+  "description": "An MCP server for interacting with Outline's API",
+  "type": "module",
+  "bin": {
+    "outline-mcp": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x build/index.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
+    "start": "npm run build && node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "0.6.0",
+    "axios": "^1.6.0",
+    "dotenv": "16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "outline",
+    "mcp",
+    "getoutline.com",
+    "model-context-protocol"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+} 
