@@ -33,7 +33,7 @@ export type ListDocumentsArgs = {
 };
 
 export type GetDocumentArgs = {
-  documentId: string;
+  id: string;
 };
 
 export type CreateDocumentArgs = {
@@ -54,7 +54,7 @@ export type UpdateDocumentArgs = {
 };
 
 export type DeleteDocumentArgs = {
-  documentId: string;
+  id: string;
 };
 
 export type ListCollectionsArgs = {
@@ -62,7 +62,7 @@ export type ListCollectionsArgs = {
 };
 
 export type GetCollectionArgs = {
-  collectionId: string;
+  id: string;
 };
 
 export type ListTeamsArgs = {

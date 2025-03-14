@@ -9,7 +9,7 @@ registerTool({
   description: "Delete a document",
   inputSchema: {
     properties: {
-      documentId: { 
+      id: { 
         type: "string", 
         description: "ID of the document to delete" 
       },
@@ -20,7 +20,7 @@ registerTool({
 }, async function handleDeleteDocument(args: DeleteDocumentArgs) {
   try {
     const response = await outlineClient.post(`/documents.delete`, {
-      id: args.documentId
+      id: args.id
     });
     return { success: response.status === 200 };
   } catch (error: any) {

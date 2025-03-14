@@ -9,17 +9,17 @@ registerTool({
   description: "Get details about a specific collection",
   inputSchema: {
     properties: {
-      collectionId: { 
+      id: { 
         type: "string", 
         description: "ID of the collection to retrieve" 
       },
     },
-    required: ["collectionId"],
+    required: ["id"],
     type: "object",
   },
 }, async function handleGetCollection(args: GetCollectionArgs) {
   try {
-    const response = await outlineClient.get(`/collections/${args.collectionId}`);
+    const response = await outlineClient.post(`/collections.info`, { id: args.id });
     return response.data.data;
   } catch (error: any) {
     console.error('Error getting collection:', error.message);

@@ -38,7 +38,7 @@ registerTool({
       params.limit = args.limit;
     }
 
-    const response = await outlineClient.get('/documents', { params });
+    const response = await outlineClient.post('/documents.list', params);
     return response.data.data || [];
   } catch (error: any) {
     console.error('Error listing documents:', error.message);

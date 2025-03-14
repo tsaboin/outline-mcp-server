@@ -15,7 +15,7 @@ registerTool({
       },
       limit: { 
         type: "number", 
-        description: "Maximum number of documents to return (optional)" 
+        description: "Maximum number of documents to return (optional)" ,
       },
     },
     required: ["query"],
@@ -31,7 +31,7 @@ registerTool({
       params.limit = args.limit;
     }
 
-    const response = await outlineClient.get('/documents.search', { params });
+    const response = await outlineClient.post('/documents.search', params);
     return response.data.data || [];
   } catch (error: any) {
     console.error('Error searching documents:', error.message);

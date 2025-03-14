@@ -24,7 +24,7 @@ registerTool({
       params.limit = args.limit;
     }
 
-    const response = await outlineClient.get('/collections.list', { params });
+    const response = await outlineClient.post('/collections.list', params);
     return response.data.data || [];
   } catch (error: any) {
     console.error('Error listing collections:', error.message);

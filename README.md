@@ -15,11 +15,7 @@ A Model Context Protocol (MCP) server that provides tools for interacting with O
 - **Collection Management**
   - ✅ Get collection details
   - ✅ List collections
-  - ✅ Create and update collections
-
-- **Team Management**
-  - ✅ List teams/groups
-  - ✅ Get team/group details
+  - ❌ Create and update collections
 
 ## Prerequisites
 

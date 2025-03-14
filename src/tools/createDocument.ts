@@ -27,6 +27,7 @@ registerTool({
       },
       publish: { 
         type: "boolean", 
+        default: true,
         description: "Whether to publish the document immediately" 
       },
       template: { 
@@ -50,7 +51,7 @@ registerTool({
     }
 
     if (args.publish !== undefined) {
-      payload.publish = args.publish;
+      payload.publish = args.publish ?? true;
     }
 
     if (args.template !== undefined) {
