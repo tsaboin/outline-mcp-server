@@ -12,6 +12,7 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
   - ✅ Delete documents
   - ✅ List documents
   - ✅ Search documents
+  - ✅ Move documents to different collections or locations
 
 - **Collection Management**
 

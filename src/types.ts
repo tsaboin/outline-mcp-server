@@ -132,3 +132,9 @@ export type ListUsersArgs = {
   filter?: 'all' | 'invited' | 'active' | 'suspended';
   role?: 'admin' | 'member' | 'viewer' | 'guest';
 };
+
+export type MoveDocumentArgs = {
+  id: string;
+  collectionId?: string;
+  parentDocumentId?: string;
+};
