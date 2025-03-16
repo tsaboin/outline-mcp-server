@@ -14,9 +14,13 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
   - ✅ Search documents
 
 - **Collection Management**
+
   - ✅ Get collection details
   - ✅ List collections
   - ✅ Create and update collections
+
+- **Comment Management**
+  - ✅ Create comments on documents
 
 > **Note:** The SSE server implementation uses [Supergateway](https://github.com/supercorp-ai/supergateway), which provides more reliable connectivity when used with Cursor's MCP integration.
 
@@ -61,6 +65,7 @@ Example queries your AI assistant can now handle:
 - "Create a new document in the 'Product' collection"
 - "Find all documents related to a specific topic"
 - "Update the content of a document"
+- "Add a comment to a document"
 
 ## Development
 

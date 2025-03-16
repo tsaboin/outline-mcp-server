@@ -93,3 +93,10 @@ export type UpdateCollectionArgs = {
   permission?: string;
   color?: string;
 };
+
+export type CreateCommentArgs = {
+  documentId: string;
+  text: string;
+  parentCommentId?: string;
+  data?: Record<string, any>;
+};
