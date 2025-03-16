@@ -10,14 +10,12 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 
 // Import tool definitions utility
-import { getToolDefinitions } from './utils/listTools.js';
 import { registerTools } from './utils/importTools.js';
 import { omit } from 'omit-ts';
 
 // Dynamically import all tool files
-await registerTools();
+const toolDefinitions = await registerTools();
 
-const toolDefinitions = getToolDefinitions();
 console.log(
   '\n',
   `loaded ${Object.keys(toolDefinitions).length} tools`,
