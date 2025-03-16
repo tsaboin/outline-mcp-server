@@ -14,9 +14,15 @@ import { getToolDefinitions } from './utils/listTools.js';
 import { registerTools } from './utils/importTools.js';
 
 // Dynamically import all tool files
-registerTools();
+await registerTools();
 
 const toolDefinitions = getToolDefinitions();
+console.log(
+  '\n',
+  `loaded ${Object.keys(toolDefinitions).length} tools`,
+  JSON.stringify(Object.keys(toolDefinitions)),
+  '\n'
+);
 
 const server = new Server(
   {
@@ -38,7 +44,7 @@ const server = new Server(
 
 // Register request handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: getToolDefinitions(),
+  tools: Object.keys(toolDefinitions),
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async request => {
