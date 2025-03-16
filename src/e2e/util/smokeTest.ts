@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import test, { Page } from '@playwright/test';
-import { loadTool } from '../setup';
+import { loadTool } from '../setup.js';
 
 export default async function runSmokeTestForTool(page: Page, toolName: string) {
   const tool = await loadTool(page, toolName);

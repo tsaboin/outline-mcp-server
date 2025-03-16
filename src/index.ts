@@ -9,7 +9,6 @@ import {
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
 
-// Import tool definitions utility
 import { registerTools } from './utils/importTools.js';
 import { omit } from 'omit-ts';
 

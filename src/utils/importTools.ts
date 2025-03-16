@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { getToolDefinitions, type ToolDefinition } from './listTools';
+import { getToolDefinitions, type ToolDefinition } from './listTools.js';
 
 /**
  * Dynamically imports all tool files from the tools directory
@@ -13,9 +13,12 @@ export async function registerTools(): Promise<Record<string, ToolDefinition<unk
   const toolsDir = path.join(__dirname, '..', 'tools');
 
   // Import all tool files
-  const toolFiles = fs.readdirSync(toolsDir).filter(file => file.endsWith('.ts'));
+  const toolFiles = fs
+    .readdirSync(toolsDir)
+    .filter(file => file.endsWith('.ts') || file.endsWith('.js'));
   for (const file of toolFiles) {
-    await import(`../tools/${file}`);
+    const resolved = path.resolve(toolsDir, file);
+    await import(resolved);
   }
 
   // return tool definitions
