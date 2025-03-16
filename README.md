@@ -18,13 +18,15 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
   - ✅ List collections
   - ✅ Create and update collections
 
-## Prerequisites
+> **Note:** The SSE server implementation uses [Supergateway](https://github.com/supercorp-ai/supergateway), which provides more reliable connectivity when used with Cursor's MCP integration.
+
+## Quick Start
+
+### Prerequisites
 
 - Node.js (v18 or higher)
 - An Outline account with API access
 - Outline API key with appropriate permissions
-
-## Quick Start
 
 ### Installation
 
