@@ -106,3 +106,7 @@ export type UpdateCommentArgs = {
   text?: string;
   data?: Record<string, any>;
 };
+
+export type DeleteCommentArgs = {
+  id: string;
+};
