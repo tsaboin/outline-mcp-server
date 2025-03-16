@@ -158,3 +158,7 @@ export type AskDocumentsArgs = {
   statusFilter?: 'draft' | 'archived' | 'published';
   dateFilter?: 'day' | 'week' | 'month' | 'year';
 };
+
+export type CreateTemplateFromDocumentArgs = {
+  id: string;
+};

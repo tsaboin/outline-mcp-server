@@ -13,6 +13,7 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
   - ✅ List documents
   - ✅ Search documents
   - ✅ Ask natural language questions about documents
+  - ✅ Create templates from existing documents
   - ✅ Move documents to different collections or locations
   - ✅ Archive documents
 
@@ -74,6 +75,7 @@ Example queries your AI assistant can now handle:
 - "Create a new document in the 'Product' collection"
 - "Find all documents related to a specific topic"
 - "Ask a natural language question about your documents"
+- "Create a template from an existing document"
 - "Update the content of a document"
 - "Add a comment to a document"
 
