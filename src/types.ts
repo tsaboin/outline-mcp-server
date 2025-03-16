@@ -4,6 +4,9 @@ export type Collection = {
   name: string;
   description?: string;
   icon?: string;
+  color?: string;
+  permission?: string;
+  private?: boolean;
 };
 
 export type Document = {
@@ -73,4 +76,20 @@ export type SearchDocumentsArgs = {
   query: string;
   collectionId?: string;
   limit?: number;
+};
+
+export type CreateCollectionArgs = {
+  name: string;
+  description?: string;
+  permission?: string;
+  color?: string;
+  private?: boolean;
+};
+
+export type UpdateCollectionArgs = {
+  id: string;
+  name?: string;
+  description?: string;
+  permission?: string;
+  color?: string;
 };

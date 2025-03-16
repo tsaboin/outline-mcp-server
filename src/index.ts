@@ -22,6 +22,8 @@ import './tools/listDocuments.js';
 import './tools/listTeams.js';
 import './tools/searchDocuments.js';
 import './tools/updateDocument.js';
+import './tools/createCollection.js';
+import './tools/updateCollection.js';
 
 // Build the capabilities object dynamically from registered tools
 const toolsCapabilities: Record<string, boolean> = {};

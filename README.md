@@ -5,6 +5,7 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
 ## Features
 
 - **Document Management**
+
   - ✅ Create new documents with customizable properties
   - ✅ Get document details
   - ✅ Update existing documents
@@ -15,7 +16,7 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
 - **Collection Management**
   - ✅ Get collection details
   - ✅ List collections
-  - ❌ Create and update collections
+  - ✅ Create and update collections
 
 ## Prerequisites
 
@@ -40,11 +41,13 @@ OUTLINE_API_KEY=… outline-mcp-server --port 7070
 ```
 
 ### Env
-- `OUTLINE_API_KEY` (*required*): your API key for outline, duh
-- `OUTLINE_BASE_URL` (*optional*): Alternative URL for your outline API (if using an alt domain/self-hosting)
+
+- `OUTLINE_API_KEY` (_required_): your API key for outline, duh
+- `OUTLINE_BASE_URL` (_optional_): Alternative URL for your outline API (if using an alt domain/self-hosting)
 
 ### CLI Options
-- `--port <number>` (*optional*): Specify the port on which the server will run (default: 6060)
+
+- `--port <number>` (_optional_): Specify the port on which the server will run (default: 6060)
 
 ### Usage
 
@@ -76,7 +79,7 @@ OUTLINE_BASE_URL=https://your-outline-instance.com/api  # Optional, defaults to 
 ```
 
 ```bash
-# Run the project as an SSE server endpoint 
+# Run the project as an SSE server endpoint
 npm run start
 
 # Run the project as an stdio process
@@ -85,4 +88,4 @@ npm run start:stdio
 
 ## License
 
-MIT 
+MIT
