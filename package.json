@@ -27,7 +27,8 @@
     "dev": "npm run build && npm run start",
     "start:stdio": "npm run build && echo 'build done. running...\n' && node build/index.js",
     "start": "npx -y supergateway --port 6060 --stdio \"npm run start:stdio\"",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
+    "release": "scripts/release.sh"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
