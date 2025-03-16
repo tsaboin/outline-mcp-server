@@ -3,10 +3,11 @@ import test, { Page } from '@playwright/test';
 import { loadTool } from '../setup';
 
 export default async function runSmokeTestForTool(page: Page, toolName: string) {
-  const tool = await loadTool(page, 'list_collections');
+  const tool = await loadTool(page, toolName);
 
   await test.step('Fill in required fields', async () => {
     const requiredProperties = (tool.inputSchema.required as string[]) ?? [];
+    console.log('requiredProperties', requiredProperties);
     for (let property of Object.entries(tool.inputSchema.properties ?? {}).filter(([name]) =>
       requiredProperties.includes(name)
     )) {
@@ -81,6 +82,7 @@ export default async function runSmokeTestForTool(page: Page, toolName: string) 
   await test.step('Execute the tool', async () => {
     await page.getByRole('button', { name: 'Run Tool' }).click();
     await page.getByRole('heading', { name: 'Tool Result: Success' }).isVisible();
-    await page.waitForTimeout(1000);
+    await page.getByRole('heading', { name: 'Error output from MCP server' }).isHidden();
+    await page.waitForTimeout(100);
   });
 }

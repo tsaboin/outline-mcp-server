@@ -15,6 +15,7 @@ registerTool<GetDocumentArgs>({
           'Unique identifier for the document. Either the UUID or the urlId is acceptable',
       },
     },
+    required: ['id'],
     type: 'object',
   },
   handler: async function handleGetDocument(args: GetDocumentArgs) {

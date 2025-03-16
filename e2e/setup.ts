@@ -31,7 +31,7 @@ export async function loadTool(page: Page, toolName: string): Promise<ToolDefini
     await page.getByRole('button', { name: 'Connect' }).click();
     await page.getByRole('button', { name: 'List Tools' }).click();
     await page.getByText(toolName).click();
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(100);
 
     return tool;
   });
