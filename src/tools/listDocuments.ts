@@ -55,48 +55,29 @@ registerTool<ListDocumentsArgs>({
   },
   handler: async function handleListDocuments(args: ListDocumentsArgs) {
     try {
-      const payload: Record<string, any> = {};
+      // Create the payload object
+      const payload: Record<string, any> = {
+        offset: args.offset || 1,
+        limit: args.limit || 25,
+        sort: args.sort || 'updatedAt',
+        direction: args.direction || 'DESC',
+        collectionId: args.collectionId || '',
+        userId: args.userId || '',
+        backlinkDocumentId: args.backlinkDocumentId || '',
+        parentDocumentId: args.parentDocumentId || '',
+      };
 
-      if (args.collectionId) {
-        payload.collectionId = args.collectionId;
-      }
-
-      if (args.query) {
-        payload.query = args.query;
-      }
-
-      if (args.limit) {
-        payload.limit = args.limit;
-      }
-
-      if (args.offset) {
-        payload.offset = args.offset;
-      }
-
-      if (args.sort) {
-        payload.sort = args.sort;
-      }
-
-      if (args.direction) {
-        payload.direction = args.direction;
-      }
-
+      // Only add template if it's explicitly defined
       if (args.template !== undefined) {
         payload.template = args.template;
       }
 
-      if (args.userId) {
-        payload.userId = args.userId;
+      // Only add query if it's provided
+      if (args.query) {
+        payload.query = args.query;
       }
 
-      if (args.parentDocumentId) {
-        payload.parentDocumentId = args.parentDocumentId;
-      }
-
-      if (args.backlinkDocumentId) {
-        payload.backlinkDocumentId = args.backlinkDocumentId;
-      }
-
+      // Make the POST request to the documents.list endpoint
       const response = await outlineClient.post('/documents.list', payload);
 
       // Transform the response to a more usable format
