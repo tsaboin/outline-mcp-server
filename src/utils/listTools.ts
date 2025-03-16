@@ -1,3 +1,5 @@
+import type { Tool } from '@modelcontextprotocol/sdk/types';
+
 // Define a type for handler functions
 export type ToolHandler<Args> = (args: Args) => Promise<unknown>;
 
@@ -6,14 +8,7 @@ export type ToolHandler<Args> = (args: Args) => Promise<unknown>;
  */
 
 // Define the tool schema interface
-export interface ToolDefinition<Args> {
-  name: string;
-  description: string;
-  inputSchema: {
-    properties: Record<string, any>;
-    required?: string[];
-    type: string;
-  };
+export interface ToolDefinition<Args> extends Tool {
   handler: ToolHandler<Args>;
 }
 

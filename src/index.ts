@@ -12,6 +12,7 @@ import {
 // Import tool definitions utility
 import { getToolDefinitions } from './utils/listTools.js';
 import { registerTools } from './utils/importTools.js';
+import { omit } from 'omit-ts';
 
 // Dynamically import all tool files
 await registerTools();
@@ -44,7 +45,7 @@ const server = new Server(
 
 // Register request handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: Object.keys(toolDefinitions),
+  tools: Object.values(toolDefinitions).map(x => omit(x, ['handler'])),
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async request => {
