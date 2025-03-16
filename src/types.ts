@@ -100,3 +100,9 @@ export type CreateCommentArgs = {
   parentCommentId?: string;
   data?: Record<string, any>;
 };
+
+export type UpdateCommentArgs = {
+  id: string;
+  text?: string;
+  data?: Record<string, any>;
+};
