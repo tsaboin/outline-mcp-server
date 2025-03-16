@@ -25,7 +25,7 @@
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js",
     "dev": "npm run build && npm run start",
-    "start:stdio": "npm run build && echo 'build done. running...\n' &&node build/index.js",
+    "start:stdio": "npm run build && echo 'build done. running...\n' && node build/index.js",
     "start": "npx -y supergateway --port 6060 --stdio \"npm run start:stdio\"",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\""
   },
