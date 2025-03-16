@@ -44,64 +44,35 @@ jobs:
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install conventional-changelog dependencies
+        run: npm install -g conventional-changelog-cli conventional-changelog-writer conventional-changelog-angular
+
       - name: Generate changelog
         id: github_release
-        uses: mikepenz/release-changelog-builder-action@v3
-        with:
-          configurationJson: |
-            {
-              "commit_pattern": "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\\(([^)]+)\\))?:\\s(.+)$",
-              "commit_pattern_groups": ["type", "scope", "subject"],
-              "categories": [
-                {
-                  "title": "### 🚀 Features",
-                  "labels": ["feature", "enhancement"]
-                },
-                {
-                  "title": "### 🐛 Fixes",
-                  "pattern": "^fix.*",
-                  "hidden": false
-                },
-                {
-                  "title": "### 📚 Documentation",
-                  "pattern": "^docs.*",
-                  "hidden": false
-                },
-                {
-                  "title": "### ♻️ Refactoring",
-                  "pattern": "^refactor.*",
-                  "hidden": false
-                },
-                {
-                  "title": "### ⚡ Performance",
-                  "pattern": "^perf.*",
-                  "hidden": false
-                },
-                {
-                  "title": "### 🧰 Maintenance",
-                  "pattern": "^(build|ci|chore|style).*",
-                  "hidden": false
-                },
-                {
-                  "title": "### ⏪ Reverts",
-                  "pattern": "^revert.*",
-                  "hidden": false
-                },
-                {
-                  "title": "### 🧪 Tests",
-                  "pattern": "^test.*",
-                  "hidden": true
-                }
-              ],
-              "sort": {
-                "order": "ASC",
-                "on_property": "scope"
-              },
-              "template": "#{{CHANGELOG}}\n\n**Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}",
-              "base_branches": ["master", "main"]
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the previous tag to compare against
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # If no previous tag exists, use the first commit
+            FROM_REF=$(git rev-list --max-parents=0 HEAD)
+          else
+            FROM_REF=$PREVIOUS_TAG
+          fi
+
+          # Generate changelog
+          CHANGELOG=$(conventional-changelog -p angular -r 1 --outfile /dev/null --from=$FROM_REF --to=${GITHUB_REF#refs/tags/})
+
+          # Save changelog to file and to output
+          echo "$CHANGELOG" > changelog.md
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
