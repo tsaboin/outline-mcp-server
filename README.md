@@ -94,11 +94,9 @@ OUTLINE_BASE_URL=https://your-outline-instance.com/api  # Optional, defaults to 
 ```
 
 ```bash
-# Run the project as an SSE server endpoint
-npm run start
+# Builds/watches the project alongside running @modelcontextprotocol/inspector
+npm run dev
 
-# Run the project as an stdio process
-npm run start:stdio
 ```
 
 ## Contributing
