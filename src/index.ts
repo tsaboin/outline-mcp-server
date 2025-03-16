@@ -11,19 +11,10 @@ import {
 
 // Import tool definitions utility
 import { getToolDefinitions, getToolHandlers } from './utils/listTools.js';
+import { registerTools } from './utils/importTools.js';
 
-// Import all handlers to ensure tool definitions are registered
-import './tools/createDocument.js';
-import './tools/deleteDocument.js';
-import './tools/getCollection.js';
-import './tools/getDocument.js';
-import './tools/listCollections.js';
-import './tools/listDocuments.js';
-import './tools/listTeams.js';
-import './tools/searchDocuments.js';
-import './tools/updateDocument.js';
-import './tools/createCollection.js';
-import './tools/updateCollection.js';
+// Dynamically import all tool files
+registerTools();
 
 // Build the capabilities object dynamically from registered tools
 const toolsCapabilities: Record<string, boolean> = {};
