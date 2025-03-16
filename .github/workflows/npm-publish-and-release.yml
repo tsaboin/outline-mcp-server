@@ -75,9 +75,9 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          name: Release v${{ steps.get_version.outputs.VERSION }}
+          name: Outline MCP Server v${{ steps.get_version.outputs.VERSION }}
           body: |
             ## Outline MCP Server v${{ steps.get_version.outputs.VERSION }}
 
