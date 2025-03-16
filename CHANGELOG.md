@@ -1,3 +1,10 @@
+# [4.11.0](https://github.com/mmmeff/outline-mcp-server/compare/v4.10.1...v4.11.0) (2025-03-16)
+
+
+### Features
+
+* Add natural language endpoint support ([3b804ff](https://github.com/mmmeff/outline-mcp-server/commit/3b804ff40ce1f5815cf9f7c213889e2f2a1f4451))
+
 ## [4.10.1](https://github.com/mmmeff/outline-mcp-server/compare/v4.10.0...v4.10.1) (2025-03-16)
 
 
