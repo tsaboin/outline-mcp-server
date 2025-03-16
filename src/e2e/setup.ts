@@ -1,6 +1,6 @@
 import { test, type Page } from '@playwright/test';
-import { registerTools } from '../src/utils/importTools.js';
-import { ToolDefinition } from '../src/utils/listTools.js';
+import { registerTools } from '../utils/importTools.js';
+import { ToolDefinition } from '../utils/listTools.js';
 
 /**
  * Helper function to mock API responses
