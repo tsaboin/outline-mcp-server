@@ -1,3 +1,10 @@
+# [4.12.0](https://github.com/mmmeff/outline-mcp-server/compare/v4.11.0...v4.12.0) (2025-03-16)
+
+
+### Features
+
+* Add createTemplateFromDocument too ([9840ae1](https://github.com/mmmeff/outline-mcp-server/commit/9840ae12260891e16a6eaef1ced2da0a00f7d598))
+
 # [4.11.0](https://github.com/mmmeff/outline-mcp-server/compare/v4.10.1...v4.11.0) (2025-03-16)
 
 
