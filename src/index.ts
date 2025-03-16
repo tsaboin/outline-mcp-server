@@ -1,27 +1,27 @@
 #!/usr/bin/env node
 
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
   ErrorCode,
   ListToolsRequestSchema,
   McpError,
-} from "@modelcontextprotocol/sdk/types.js";
+} from '@modelcontextprotocol/sdk/types.js';
 
 // Import tool definitions utility
-import { getToolDefinitions, getToolHandlers } from "./utils/listTools.js";
+import { getToolDefinitions, getToolHandlers } from './utils/listTools.js';
 
 // Import all handlers to ensure tool definitions are registered
-import "./tools/createDocument.js";
-import "./tools/deleteDocument.js";
-import "./tools/getCollection.js";
-import "./tools/getDocument.js";
-import "./tools/listCollections.js";
-import "./tools/listDocuments.js";
-import "./tools/listTeams.js";
-import "./tools/searchDocuments.js";
-import "./tools/updateDocument.js";
+import './tools/createDocument.js';
+import './tools/deleteDocument.js';
+import './tools/getCollection.js';
+import './tools/getDocument.js';
+import './tools/listCollections.js';
+import './tools/listDocuments.js';
+import './tools/listTeams.js';
+import './tools/searchDocuments.js';
+import './tools/updateDocument.js';
 
 // Build the capabilities object dynamically from registered tools
 const toolsCapabilities: Record<string, boolean> = {};
@@ -34,8 +34,8 @@ const toolHandlers = getToolHandlers();
 
 const server = new Server(
   {
-    name: "outline-mcp",
-    version: "1.0.0",
+    name: 'outline-mcp',
+    version: '1.0.0',
   },
   {
     capabilities: {
@@ -46,10 +46,10 @@ const server = new Server(
 
 // Register request handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: getToolDefinitions()
+  tools: getToolDefinitions(),
 }));
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async request => {
   const { params } = request;
   const tool = params.name;
   const parameters = params.arguments || {};
@@ -63,15 +63,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     // Get the handler for this tool
     const handler = toolHandlers[tool];
     if (!handler) {
-      return { error: { code: ErrorCode.InvalidRequest, message: `No handler found for tool ${tool}` } };
+      return {
+        error: { code: ErrorCode.InvalidRequest, message: `No handler found for tool ${tool}` },
+      };
     }
 
     // Call the handler with the provided parameters
     const result = await handler(parameters);
-    return { 
-      content: [
-        { type: "text", text: JSON.stringify(result, null, 2) }
-      ]
+    return {
+      content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
     };
   } catch (error) {
     if (error instanceof McpError) {
@@ -84,10 +84,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("Outline MCP server running on stdio");
+  console.log('Outline MCP server running on stdio');
 }
 
-main().catch((error) => {
-  console.error("Server error:", error);
+main().catch(error => {
+  console.error('Server error:', error);
   process.exit(1);
-}); 
+});

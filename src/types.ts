@@ -73,4 +73,4 @@ export type SearchDocumentsArgs = {
   query: string;
   collectionId?: string;
   limit?: number;
-}; 
+};

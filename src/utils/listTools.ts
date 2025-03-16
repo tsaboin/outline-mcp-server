@@ -36,4 +36,4 @@ export function getToolDefinitions(): ToolDefinition[] {
 // Function to get all registered tool handlers
 export function getToolHandlers(): Record<string, ToolHandler> {
   return toolHandlers;
-} 
+}

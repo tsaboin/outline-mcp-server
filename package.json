@@ -26,7 +26,8 @@
     "inspector": "npx @modelcontextprotocol/inspector build/index.js",
     "dev": "npm run build && npm run start",
     "start:stdio": "npm run build && echo 'build done. running...\n' &&node build/index.js",
-    "start": "npx -y supergateway --port 6060 --stdio \"npm run start:stdio\""
+    "start": "npx -y supergateway --port 6060 --stdio \"npm run start:stdio\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\""
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
+    "prettier": "^3.2.5",
     "typescript": "^5.3.3"
   },
   "keywords": [
