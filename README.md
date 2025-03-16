@@ -101,6 +101,24 @@ npm run start
 npm run start:stdio
 ```
 
+## Contributing
+
+This project uses [semantic-release](https://semantic-release.gitbook.io/semantic-release/) for automated versioning and package publishing. Please follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for your commit messages to ensure proper versioning.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on how to contribute to this project.
+
+## Release Process
+
+Releases are fully automated using semantic-release and GitHub Actions. When commits are pushed to the `master` branch, the following happens:
+
+1. The CI pipeline runs tests and builds the package
+2. semantic-release analyzes commit messages to determine the next version number
+3. A new version is automatically published to npm
+4. A GitHub release is created with auto-generated release notes
+5. The CHANGELOG.md file is updated
+
+No manual version bumping or release creation is needed.
+
 ## License
 
 MIT
