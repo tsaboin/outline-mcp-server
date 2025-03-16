@@ -1,3 +1,10 @@
+## [4.12.1](https://github.com/mmmeff/outline-mcp-server/compare/v4.12.0...v4.12.1) (2025-03-16)
+
+
+### Bug Fixes
+
+* restore src->build config to not break everything else ([c927dda](https://github.com/mmmeff/outline-mcp-server/commit/c927dda37ad63b667fb9a2b897d1217acf3fd9ae))
+
 # [4.12.0](https://github.com/mmmeff/outline-mcp-server/compare/v4.11.0...v4.12.0) (2025-03-16)
 
 
