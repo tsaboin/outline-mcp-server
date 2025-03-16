@@ -4,34 +4,32 @@ import { CreateCommentArgs } from '../types.js';
 import { registerTool } from '../utils/listTools.js';
 
 // Register this tool
-registerTool(
-  {
-    name: 'create_comment',
-    description: 'Create a new comment on a document',
-    inputSchema: {
-      properties: {
-        documentId: {
-          type: 'string',
-          description: 'ID of the document to comment on',
-        },
-        text: {
-          type: 'string',
-          description: 'The body of the comment in markdown',
-        },
-        parentCommentId: {
-          type: 'string',
-          description: 'ID of the parent comment (if replying to another comment)',
-        },
-        data: {
-          type: 'object',
-          description: 'The body of the comment',
-        },
+registerTool<CreateCommentArgs>({
+  name: 'create_comment',
+  description: 'Create a new comment on a document',
+  inputSchema: {
+    properties: {
+      documentId: {
+        type: 'string',
+        description: 'ID of the document to comment on',
       },
-      required: ['documentId', 'text'],
-      type: 'object',
+      text: {
+        type: 'string',
+        description: 'Content of the comment in markdown format',
+      },
+      parentCommentId: {
+        type: 'string',
+        description: 'ID of the parent comment (if replying to a comment)',
+      },
+      data: {
+        type: 'object',
+        description: 'Additional data for the comment (optional)',
+      },
     },
+    required: ['documentId', 'text'],
+    type: 'object',
   },
-  async function handleCreateComment(args: CreateCommentArgs) {
+  handler: async function handleCreateComment(args: CreateCommentArgs) {
     try {
       const payload: Record<string, any> = {
         documentId: args.documentId,
@@ -52,5 +50,5 @@ registerTool(
       console.error('Error creating comment:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);
     }
-  }
-);
+  },
+});

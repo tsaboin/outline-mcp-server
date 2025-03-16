@@ -4,55 +4,53 @@ import { ListUsersArgs } from '../types.js';
 import { registerTool } from '../utils/listTools.js';
 
 // Register this tool
-registerTool(
-  {
-    name: 'list_users',
-    description: 'List and filter all users in the team',
-    inputSchema: {
-      properties: {
-        offset: {
-          type: 'number',
-          description: 'Pagination offset',
-        },
-        limit: {
-          type: 'number',
-          description: 'Maximum number of users to return',
-        },
-        sort: {
-          type: 'string',
-          description: 'Field to sort by (e.g., "updatedAt")',
-        },
-        direction: {
-          type: 'string',
-          enum: ['ASC', 'DESC'],
-          description: 'Sort direction',
-        },
-        query: {
-          type: 'string',
-          description: 'Search query to filter users by name or email',
-        },
-        emails: {
-          type: 'array',
-          items: {
-            type: 'string',
-          },
-          description: 'Filter users by specific email addresses',
-        },
-        filter: {
-          type: 'string',
-          enum: ['all', 'invited', 'active', 'suspended'],
-          description: 'Filter users by status',
-        },
-        role: {
-          type: 'string',
-          enum: ['admin', 'member', 'viewer', 'guest'],
-          description: 'Filter users by role',
-        },
+registerTool<ListUsersArgs>({
+  name: 'list_users',
+  description: 'List all users in the Outline workspace',
+  inputSchema: {
+    properties: {
+      offset: {
+        type: 'number',
+        description: 'Pagination offset (optional)',
       },
-      type: 'object',
+      limit: {
+        type: 'number',
+        description: 'Maximum number of users to return (optional)',
+      },
+      sort: {
+        type: 'string',
+        description: 'Field to sort by (e.g. "name", "email", "createdAt") (optional)',
+      },
+      direction: {
+        type: 'string',
+        description: 'Sort direction, either "ASC" or "DESC" (optional)',
+        enum: ['ASC', 'DESC'],
+      },
+      query: {
+        type: 'string',
+        description: 'Search query to filter users (optional)',
+      },
+      emails: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        description: 'Filter by email addresses (optional)',
+      },
+      filter: {
+        type: 'string',
+        description: 'Filter by user status (optional)',
+        enum: ['all', 'invited', 'active', 'suspended'],
+      },
+      role: {
+        type: 'string',
+        description: 'Filter by user role (optional)',
+        enum: ['admin', 'member', 'viewer', 'guest'],
+      },
     },
+    type: 'object',
   },
-  async function handleListUsers(args: ListUsersArgs) {
+  handler: async function handleListUsers(args: ListUsersArgs) {
     try {
       const payload: Record<string, any> = {};
 
@@ -64,35 +62,35 @@ registerTool(
         payload.limit = args.limit;
       }
 
-      if (args.sort !== undefined) {
+      if (args.sort) {
         payload.sort = args.sort;
       }
 
-      if (args.direction !== undefined) {
+      if (args.direction) {
         payload.direction = args.direction;
       }
 
-      if (args.query !== undefined) {
+      if (args.query) {
         payload.query = args.query;
       }
 
-      if (args.emails !== undefined && args.emails.length > 0) {
+      if (args.emails && args.emails.length > 0) {
         payload.emails = args.emails;
       }
 
-      if (args.filter !== undefined) {
+      if (args.filter) {
         payload.filter = args.filter;
       }
 
-      if (args.role !== undefined) {
+      if (args.role) {
         payload.role = args.role;
       }
 
       const response = await outlineClient.post('/users.list', payload);
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
       console.error('Error listing users:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);
     }
-  }
-);
+  },
+});

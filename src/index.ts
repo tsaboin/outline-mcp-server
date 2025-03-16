@@ -10,20 +10,13 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 
 // Import tool definitions utility
-import { getToolDefinitions, getToolHandlers } from './utils/listTools.js';
+import { getToolDefinitions } from './utils/listTools.js';
 import { registerTools } from './utils/importTools.js';
 
 // Dynamically import all tool files
 registerTools();
 
-// Build the capabilities object dynamically from registered tools
-const toolsCapabilities: Record<string, boolean> = {};
-getToolDefinitions().forEach(tool => {
-  toolsCapabilities[tool.name] = true;
-});
-
-// Get the tool handlers
-const toolHandlers = getToolHandlers();
+const toolDefinitions = getToolDefinitions();
 
 const server = new Server(
   {
@@ -32,7 +25,13 @@ const server = new Server(
   },
   {
     capabilities: {
-      tools: toolsCapabilities,
+      tools: Object.entries(toolDefinitions).reduce(
+        (acc, [name, definition]) => {
+          acc[name] = true;
+          return acc;
+        },
+        {} as Record<string, boolean>
+      ),
     },
   }
 );
@@ -44,25 +43,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 
 server.setRequestHandler(CallToolRequestSchema, async request => {
   const { params } = request;
-  const tool = params.name;
+  const toolName = params.name;
   const parameters = params.arguments || {};
 
-  try {
-    // Check if the tool is supported in our capabilities
-    if (!toolsCapabilities[tool]) {
-      return { error: { code: ErrorCode.InvalidRequest, message: `Tool ${tool} not supported` } };
-    }
+  const toolDefinition = toolDefinitions[toolName];
 
-    // Get the handler for this tool
-    const handler = toolHandlers[tool];
-    if (!handler) {
+  try {
+    // Check if the tool is supported
+    if (!toolDefinition) {
       return {
-        error: { code: ErrorCode.InvalidRequest, message: `No handler found for tool ${tool}` },
+        error: { code: ErrorCode.InvalidRequest, message: `Tool ${toolName} not supported` },
       };
     }
 
     // Call the handler with the provided parameters
-    const result = await handler(parameters);
+    const result = await toolDefinition.handler(parameters);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
     };

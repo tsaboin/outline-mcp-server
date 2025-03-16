@@ -4,38 +4,36 @@ import { CreateCollectionArgs } from '../types.js';
 import { registerTool } from '../utils/listTools.js';
 
 // Register this tool
-registerTool(
-  {
-    name: 'create_collection',
-    description: 'Create a new collection',
-    inputSchema: {
-      properties: {
-        name: {
-          type: 'string',
-          description: 'Title of the collection',
-        },
-        description: {
-          type: 'string',
-          description: 'Content of the collection in markdown format',
-        },
-        permission: {
-          type: 'string',
-          description: 'Permission level for the collection (read, read_write)',
-        },
-        color: {
-          type: 'string',
-          description: 'Hex color code for the collection',
-        },
-        private: {
-          type: 'boolean',
-          description: 'Whether this collection is private',
-        },
+registerTool<CreateCollectionArgs>({
+  name: 'create_collection',
+  description: 'Create a new collection',
+  inputSchema: {
+    properties: {
+      name: {
+        type: 'string',
+        description: 'Title of the collection',
       },
-      required: ['name'],
-      type: 'object',
+      description: {
+        type: 'string',
+        description: 'Content of the collection in markdown format',
+      },
+      permission: {
+        type: 'string',
+        description: 'Permission level for the collection (read, read_write)',
+      },
+      color: {
+        type: 'string',
+        description: 'Hex color code for the collection',
+      },
+      private: {
+        type: 'boolean',
+        description: 'Whether this collection is private',
+      },
     },
+    required: ['name'],
+    type: 'object',
   },
-  async function handleCreateCollection(args: CreateCollectionArgs) {
+  handler: async function handleCreateCollection(args: CreateCollectionArgs) {
     try {
       const payload: Record<string, any> = {
         name: args.name,
@@ -63,5 +61,5 @@ registerTool(
       console.error('Error creating collection:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);
     }
-  }
-);
+  },
+});

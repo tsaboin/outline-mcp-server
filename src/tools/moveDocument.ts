@@ -4,50 +4,46 @@ import { MoveDocumentArgs } from '../types.js';
 import { registerTool } from '../utils/listTools.js';
 
 // Register this tool
-registerTool(
-  {
-    name: 'move_document',
-    description: 'Move a document to a new location or collection',
-    inputSchema: {
-      properties: {
-        id: {
-          type: 'string',
-          description:
-            'Unique identifier for the document. Either the UUID or the urlId is acceptable.',
-        },
-        collectionId: {
-          type: 'string',
-          description: 'The ID of the collection to move the document to',
-        },
-        parentDocumentId: {
-          type: 'string',
-          description:
-            'The ID of the parent document to move the document under. If not provided, the document will be moved to the collection root.',
-        },
+registerTool<MoveDocumentArgs>({
+  name: 'move_document',
+  description: 'Move a document to a different collection or parent document',
+  inputSchema: {
+    properties: {
+      id: {
+        type: 'string',
+        description: 'ID of the document to move',
       },
-      required: ['id'],
-      type: 'object',
+      collectionId: {
+        type: 'string',
+        description: 'ID of the collection to move the document to (optional)',
+      },
+      parentDocumentId: {
+        type: 'string',
+        description: 'ID of the parent document to move under (optional)',
+      },
     },
+    required: ['id'],
+    type: 'object',
   },
-  async function handleMoveDocument(args: MoveDocumentArgs) {
+  handler: async function handleMoveDocument(args: MoveDocumentArgs) {
     try {
       const payload: Record<string, any> = {
         id: args.id,
       };
 
-      if (args.collectionId !== undefined) {
+      if (args.collectionId) {
         payload.collectionId = args.collectionId;
       }
 
-      if (args.parentDocumentId !== undefined) {
+      if (args.parentDocumentId) {
         payload.parentDocumentId = args.parentDocumentId;
       }
 
       const response = await outlineClient.post('/documents.move', payload);
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
       console.error('Error moving document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);
     }
-  }
-);
+  },
+});

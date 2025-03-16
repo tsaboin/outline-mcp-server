@@ -4,44 +4,42 @@ import { UpdateCollectionArgs } from '../types.js';
 import { registerTool } from '../utils/listTools.js';
 
 // Register this tool
-registerTool(
-  {
-    name: 'update_collection',
-    description: 'Update an existing collection',
-    inputSchema: {
-      properties: {
-        id: {
-          type: 'string',
-          description: 'ID of the collection to update',
-        },
-        name: {
-          type: 'string',
-          description: 'New title for the collection',
-        },
-        description: {
-          type: 'string',
-          description: 'New description for the collection',
-        },
-        permission: {
-          type: 'string',
-          description: 'New permission level for the collection (read, read_write)',
-        },
-        color: {
-          type: 'string',
-          description: 'New hex color code for the collection',
-        },
+registerTool<UpdateCollectionArgs>({
+  name: 'update_collection',
+  description: 'Update an existing collection',
+  inputSchema: {
+    properties: {
+      id: {
+        type: 'string',
+        description: 'ID of the collection to update',
       },
-      required: ['id'],
-      type: 'object',
+      name: {
+        type: 'string',
+        description: 'New name for the collection (optional)',
+      },
+      description: {
+        type: 'string',
+        description: 'New description for the collection (optional)',
+      },
+      permission: {
+        type: 'string',
+        description: 'New permission setting for the collection (optional)',
+      },
+      color: {
+        type: 'string',
+        description: 'New color for the collection (optional)',
+      },
     },
+    required: ['id'],
+    type: 'object',
   },
-  async function handleUpdateCollection(args: UpdateCollectionArgs) {
+  handler: async function handleUpdateCollection(args: UpdateCollectionArgs) {
     try {
       const payload: Record<string, any> = {
         id: args.id,
       };
 
-      if (args.name !== undefined) {
+      if (args.name) {
         payload.name = args.name;
       }
 
@@ -49,11 +47,11 @@ registerTool(
         payload.description = args.description;
       }
 
-      if (args.permission !== undefined) {
+      if (args.permission) {
         payload.permission = args.permission;
       }
 
-      if (args.color !== undefined) {
+      if (args.color) {
         payload.color = args.color;
       }
 
@@ -63,5 +61,5 @@ registerTool(
       console.error('Error updating collection:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);
     }
-  }
-);
+  },
+});

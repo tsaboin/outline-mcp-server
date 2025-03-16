@@ -4,38 +4,36 @@ import { UpdateDocumentArgs } from '../types.js';
 import { registerTool } from '../utils/listTools.js';
 
 // Register this tool
-registerTool(
-  {
-    name: 'update_document',
-    description: 'Update an existing document',
-    inputSchema: {
-      properties: {
-        documentId: {
-          type: 'string',
-          description: 'ID of the document to update',
-        },
-        title: {
-          type: 'string',
-          description: 'New title for the document',
-        },
-        text: {
-          type: 'string',
-          description: 'New content for the document in markdown format',
-        },
-        publish: {
-          type: 'boolean',
-          description: 'Whether to publish the document',
-        },
-        done: {
-          type: 'boolean',
-          description: 'Whether the document is marked as done',
-        },
+registerTool<UpdateDocumentArgs>({
+  name: 'update_document',
+  description: 'Update an existing document',
+  inputSchema: {
+    properties: {
+      documentId: {
+        type: 'string',
+        description: 'ID of the document to update',
       },
-      required: ['documentId'],
-      type: 'object',
+      title: {
+        type: 'string',
+        description: 'New title for the document',
+      },
+      text: {
+        type: 'string',
+        description: 'New content for the document in markdown format',
+      },
+      publish: {
+        type: 'boolean',
+        description: 'Whether to publish the document',
+      },
+      done: {
+        type: 'boolean',
+        description: 'Whether the document is marked as done',
+      },
     },
+    required: ['documentId'],
+    type: 'object',
   },
-  async function handleUpdateDocument(args: UpdateDocumentArgs) {
+  handler: async function handleUpdateDocument(args: UpdateDocumentArgs) {
     try {
       const payload: Record<string, any> = {
         id: args.documentId,
@@ -63,5 +61,5 @@ registerTool(
       console.error('Error updating document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);
     }
-  }
-);
+  },
+});

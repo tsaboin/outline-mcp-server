@@ -4,40 +4,38 @@ import { UpdateCommentArgs } from '../types.js';
 import { registerTool } from '../utils/listTools.js';
 
 // Register this tool
-registerTool(
-  {
-    name: 'update_comment',
-    description: 'Update an existing comment',
-    inputSchema: {
-      properties: {
-        id: {
-          type: 'string',
-          description: 'ID of the comment to update',
-        },
-        text: {
-          type: 'string',
-          description: 'New content for the comment in markdown format',
-        },
-        data: {
-          type: 'object',
-          description: 'Additional data for the comment',
-        },
+registerTool<UpdateCommentArgs>({
+  name: 'update_comment',
+  description: 'Update an existing comment',
+  inputSchema: {
+    properties: {
+      id: {
+        type: 'string',
+        description: 'ID of the comment to update',
       },
-      required: ['id'],
-      type: 'object',
+      text: {
+        type: 'string',
+        description: 'New content for the comment in markdown format',
+      },
+      data: {
+        type: 'object',
+        description: 'Additional data for the comment (optional)',
+      },
     },
+    required: ['id'],
+    type: 'object',
   },
-  async function handleUpdateComment(args: UpdateCommentArgs) {
+  handler: async function handleUpdateComment(args: UpdateCommentArgs) {
     try {
       const payload: Record<string, any> = {
         id: args.id,
       };
 
-      if (args.text !== undefined) {
+      if (args.text) {
         payload.text = args.text;
       }
 
-      if (args.data !== undefined) {
+      if (args.data) {
         payload.data = args.data;
       }
 
@@ -47,5 +45,5 @@ registerTool(
       console.error('Error updating comment:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);
     }
-  }
-);
+  },
+});

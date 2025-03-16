@@ -1,9 +1,12 @@
+// Define a type for handler functions
+export type ToolHandler<Args> = (args: Args) => Promise<unknown>;
+
 /**
  * Utility to collect tool definitions from handler modules
  */
 
 // Define the tool schema interface
-export interface ToolDefinition {
+export interface ToolDefinition<Args> {
   name: string;
   description: string;
   inputSchema: {
@@ -11,29 +14,18 @@ export interface ToolDefinition {
     required?: string[];
     type: string;
   };
+  handler: ToolHandler<Args>;
 }
 
-// Define a type for handler functions
-export type ToolHandler = (args: any) => Promise<any>;
-
-// We'll collect all tool definitions here
-const toolDefinitions: ToolDefinition[] = [];
-
-// Map of tool names to handler functions
-const toolHandlers: Record<string, ToolHandler> = {};
+// We'll collect all tool definitions here, keyed by name
+const toolDefinitions: Record<string, ToolDefinition<unknown>> = {};
 
 // Function to register a tool definition
-export function registerTool(definition: ToolDefinition, handler: ToolHandler): void {
-  toolDefinitions.push(definition);
-  toolHandlers[definition.name] = handler;
+export function registerTool<Args>(definition: ToolDefinition<Args>): void {
+  toolDefinitions[definition.name] = definition as unknown as ToolDefinition<unknown>;
 }
 
 // Function to get all registered tool definitions
-export function getToolDefinitions(): ToolDefinition[] {
+export function getToolDefinitions(): Record<string, ToolDefinition<unknown>> {
   return toolDefinitions;
-}
-
-// Function to get all registered tool handlers
-export function getToolHandlers(): Record<string, ToolHandler> {
-  return toolHandlers;
 }
