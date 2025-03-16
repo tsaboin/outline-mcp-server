@@ -20,9 +20,13 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
   - ✅ Create and update collections
 
 - **Comment Management**
+
   - ✅ Create comments on documents
   - ✅ Update existing comments
   - ✅ Delete comments
+
+- **User Management**
+  - ✅ List and filter users
 
 > **Note:** The SSE server implementation uses [Supergateway](https://github.com/supercorp-ai/supergateway), which provides more reliable connectivity when used with Cursor's MCP integration.
 

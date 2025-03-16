@@ -28,6 +28,17 @@ export type Team = {
   avatarUrl?: string;
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl?: string;
+  role: string;
+  isSuspended: boolean;
+  lastActiveAt: string;
+  createdAt: string;
+};
+
 // Define argument types for tools
 export type ListDocumentsArgs = {
   collectionId?: string;
@@ -109,4 +120,15 @@ export type UpdateCommentArgs = {
 
 export type DeleteCommentArgs = {
   id: string;
+};
+
+export type ListUsersArgs = {
+  offset?: number;
+  limit?: number;
+  sort?: string;
+  direction?: 'ASC' | 'DESC';
+  query?: string;
+  emails?: string[];
+  filter?: 'all' | 'invited' | 'active' | 'suspended';
+  role?: 'admin' | 'member' | 'viewer' | 'guest';
 };
