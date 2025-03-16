@@ -1,12 +1,4 @@
-import { test as base, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
-
-// Extend the base test with custom fixtures
-export const test = base.extend({
-  // Add custom fixtures here if needed
-});
-
-export { expect };
 
 /**
  * Helper function to mock API responses

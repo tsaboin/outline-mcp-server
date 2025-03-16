@@ -1,4 +1,5 @@
-import { test, expect, mockApiResponse, loadTool } from './setup';
+import test from '@playwright/test';
+import { mockApiResponse, loadTool } from './setup';
 
 test.describe('deleteComment Tool', () => {
   test.beforeEach(async ({ page }) => {
