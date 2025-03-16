@@ -1,3 +1,10 @@
+## [4.10.1](https://github.com/mmmeff/outline-mcp-server/compare/v4.10.0...v4.10.1) (2025-03-16)
+
+
+### Bug Fixes
+
+* build correct tools list response using mcp lib types ([55c15d4](https://github.com/mmmeff/outline-mcp-server/commit/55c15d444698993bb2a5d7f3250c09207bc1663d))
+
 # [4.10.0](https://github.com/mmmeff/outline-mcp-server/compare/v4.9.0...v4.10.0) (2025-03-16)
 
 
