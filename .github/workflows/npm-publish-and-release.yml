@@ -55,24 +55,35 @@ jobs:
       - name: Generate changelog
         id: github_release
         run: |
+          # Debug info
+          echo "Current ref: ${GITHUB_REF}"
+          echo "Current tag: ${GITHUB_REF#refs/tags/}"
+
           # Get the previous tag to compare against
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          echo "Previous tag: $PREVIOUS_TAG"
 
           if [ -z "$PREVIOUS_TAG" ]; then
             # If no previous tag exists, use the first commit
             FROM_REF=$(git rev-list --max-parents=0 HEAD)
+            echo "No previous tag found, using first commit: $FROM_REF"
           else
             FROM_REF=$PREVIOUS_TAG
+            echo "Using previous tag as reference: $FROM_REF"
           fi
 
-          # Generate changelog
-          CHANGELOG=$(conventional-changelog -p angular -r 1 --outfile /dev/null --from=$FROM_REF --to=${GITHUB_REF#refs/tags/})
+          # Generate changelog and save to file
+          echo "Running conventional-changelog from=$FROM_REF to=${GITHUB_REF#refs/tags/}"
+          conventional-changelog -p angular -r 1 --outfile changelog.md --from=$FROM_REF --to=${GITHUB_REF#refs/tags/}
 
-          # Save changelog to file and to output
-          echo "$CHANGELOG" > changelog.md
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # Debug: Show generated changelog
+          echo "Generated changelog content:"
+          cat changelog.md
+
+          # Fix for multiline output in GitHub Actions
+          echo 'changelog<<CHANGELOG_EOF' >> $GITHUB_OUTPUT
+          cat changelog.md >> $GITHUB_OUTPUT
+          echo 'CHANGELOG_EOF' >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
