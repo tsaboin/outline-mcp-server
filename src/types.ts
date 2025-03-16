@@ -149,3 +149,12 @@ export type MoveDocumentArgs = {
 export type ArchiveDocumentArgs = {
   id: string;
 };
+
+export type AskDocumentsArgs = {
+  query: string;
+  userId?: string;
+  collectionId?: string;
+  documentId?: string;
+  statusFilter?: 'draft' | 'archived' | 'published';
+  dateFilter?: 'day' | 'week' | 'month' | 'year';
+};
