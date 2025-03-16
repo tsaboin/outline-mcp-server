@@ -1,3 +1,10 @@
+## [4.12.2](https://github.com/mmmeff/outline-mcp-server/compare/v4.12.1...v4.12.2) (2025-03-16)
+
+
+### Bug Fixes
+
+* failure to dynamically load tools when running transpiled code ([b22061c](https://github.com/mmmeff/outline-mcp-server/commit/b22061c138d82bcddecaab0ae59a17f2f6ade312))
+
 ## [4.12.1](https://github.com/mmmeff/outline-mcp-server/compare/v4.12.0...v4.12.1) (2025-03-16)
 
 
