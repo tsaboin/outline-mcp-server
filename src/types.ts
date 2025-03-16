@@ -138,3 +138,7 @@ export type MoveDocumentArgs = {
   collectionId?: string;
   parentDocumentId?: string;
 };
+
+export type ArchiveDocumentArgs = {
+  id: string;
+};
