@@ -44,6 +44,13 @@ export type ListDocumentsArgs = {
   collectionId?: string;
   query?: string;
   limit?: number;
+  offset?: number;
+  sort?: string;
+  direction?: 'ASC' | 'DESC';
+  template?: boolean;
+  userId?: string;
+  parentDocumentId?: string;
+  backlinkDocumentId?: string;
 };
 
 export type GetDocumentArgs = {
