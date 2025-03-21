@@ -59,7 +59,7 @@ OUTLINE_API_KEY=… outline-mcp-server --port 7070
 ### Env
 
 - `OUTLINE_API_KEY` (_required_): your API key for outline, duh
-- `OUTLINE_BASE_URL` (_optional_): Alternative URL for your outline API (if using an alt domain/self-hosting)
+- `OUTLINE_API_URL` (_optional_): Alternative URL for your outline API (if using an alt domain/self-hosting)
 
 ### CLI Options
 
@@ -94,7 +94,7 @@ npm install
 
 ```
 OUTLINE_API_KEY=your_outline_api_key_here
-OUTLINE_BASE_URL=https://your-outline-instance.com/api  # Optional, defaults to https://app.getoutline.com/api
+OUTLINE_API_URL=https://your-outline-instance.com/api  # Optional, defaults to https://app.getoutline.com/api
 ```
 
 ```bash
