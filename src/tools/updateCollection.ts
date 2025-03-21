@@ -1,39 +1,23 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { UpdateCollectionArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<UpdateCollectionArgs>({
+toolRegistry.register('update_collection', {
   name: 'update_collection',
   description: 'Update an existing collection',
   inputSchema: {
-    properties: {
-      id: {
-        type: 'string',
-        description: 'ID of the collection to update',
-      },
-      name: {
-        type: 'string',
-        description: 'New name for the collection (optional)',
-      },
-      description: {
-        type: 'string',
-        description: 'New description for the collection (optional)',
-      },
-      permission: {
-        type: 'string',
-        description: 'New permission setting for the collection (optional)',
-      },
-      color: {
-        type: 'string',
-        description: 'New color for the collection (optional)',
-      },
-    },
-    required: ['id'],
-    type: 'object',
+    id: z.string().describe('ID of the collection to update'),
+    name: z.string().describe('New name for the collection (optional)').optional(),
+    description: z.string().describe('New description for the collection (optional)').optional(),
+    permission: z
+      .string()
+      .describe('New permission setting for the collection (optional)')
+      .optional(),
+    color: z.string().describe('New color for the collection (optional)').optional(),
   },
-  handler: async function handleUpdateCollection(args: UpdateCollectionArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         id: args.id,
@@ -56,7 +40,7 @@ registerTool<UpdateCollectionArgs>({
       }
 
       const response = await outlineClient.post('/collections.update', payload);
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error updating collection:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

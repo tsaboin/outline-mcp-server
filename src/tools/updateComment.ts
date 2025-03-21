@@ -1,31 +1,18 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { UpdateCommentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<UpdateCommentArgs>({
+toolRegistry.register('update_comment', {
   name: 'update_comment',
   description: 'Update an existing comment',
   inputSchema: {
-    properties: {
-      id: {
-        type: 'string',
-        description: 'ID of the comment to update',
-      },
-      text: {
-        type: 'string',
-        description: 'New content for the comment in markdown format',
-      },
-      data: {
-        type: 'object',
-        description: 'Additional data for the comment (optional)',
-      },
-    },
-    required: ['id'],
-    type: 'object',
+    id: z.string().describe('ID of the comment to update'),
+    text: z.string().describe('New content for the comment in markdown format').optional(),
+    data: z.object({}).describe('Additional data for the comment (optional)').optional(),
   },
-  handler: async function handleUpdateComment(args: UpdateCommentArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         id: args.id,
@@ -40,7 +27,7 @@ registerTool<UpdateCommentArgs>({
       }
 
       const response = await outlineClient.post('/comments.update', payload);
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error updating comment:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

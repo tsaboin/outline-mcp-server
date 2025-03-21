@@ -24,11 +24,3 @@ export const outlineClient = axios.create({
     Accept: 'application/json',
   },
 });
-
-// Type definitions for API responses
-export type OutlineUser = {
-  id: string;
-  name: string;
-  email: string;
-  avatarUrl?: string;
-};

@@ -1,39 +1,23 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { CreateCollectionArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<CreateCollectionArgs>({
+toolRegistry.register('create_collection', {
   name: 'create_collection',
   description: 'Create a new collection',
   inputSchema: {
-    properties: {
-      name: {
-        type: 'string',
-        description: 'Title of the collection',
-      },
-      description: {
-        type: 'string',
-        description: 'Content of the collection in markdown format',
-      },
-      permission: {
-        type: 'string',
-        description: 'Permission level for the collection (read, read_write)',
-      },
-      color: {
-        type: 'string',
-        description: 'Hex color code for the collection',
-      },
-      private: {
-        type: 'boolean',
-        description: 'Whether this collection is private',
-      },
-    },
-    required: ['name'],
-    type: 'object',
+    name: z.string().describe('Title of the collection'),
+    description: z.string().describe('Content of the collection in markdown format').optional(),
+    permission: z
+      .enum(['read', 'read_write'])
+      .describe('Permission level for the collection')
+      .optional(),
+    color: z.string().describe('Hex color code for the collection').optional(),
+    private: z.boolean().describe('Whether this collection is private').optional(),
   },
-  handler: async function handleCreateCollection(args: CreateCollectionArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         name: args.name,
@@ -56,7 +40,7 @@ registerTool<CreateCollectionArgs>({
       }
 
       const response = await outlineClient.post('/collections.create', payload);
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error creating collection:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

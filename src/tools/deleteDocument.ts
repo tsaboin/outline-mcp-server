@@ -1,28 +1,21 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { DeleteDocumentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<DeleteDocumentArgs>({
+toolRegistry.register('delete_document', {
   name: 'delete_document',
   description: 'Delete a document',
   inputSchema: {
-    properties: {
-      id: {
-        type: 'string',
-        description: 'ID of the document to delete',
-      },
-    },
-    required: ['id'],
-    type: 'object',
+    id: z.string().describe('ID of the document to delete'),
   },
-  handler: async function handleDeleteDocument(args: DeleteDocumentArgs) {
+  async callback(args) {
     try {
       const response = await outlineClient.post('/documents.delete', {
         id: args.id,
       });
-      return response.data.success;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.success) }] };
     } catch (error: any) {
       console.error('Error deleting document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

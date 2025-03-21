@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server that provides tools for interacting with [Outline](https://www.getoutline.com/)'s API, enabling AI agents to manage documents, collections, and other entities programmatically through the Outline knowledge base platform.
 
+> **Upgrade Notice:** As of v5, this server no longer provides an `stdio` or `sse` interface and solely exposes a [Streamable HTTP endpoint](https://modelcontextprotocol.io/specification/draft/basic/transports#streamable-http) at the `/mcp` route. If you require sse/stdio, downgrade to v4
+
 ## Features
 
 - **Document Management**
@@ -32,38 +34,31 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
 - **User Management**
   - ✅ List and filter users
 
-> **Note:** The SSE server implementation uses [Supergateway](https://github.com/supercorp-ai/supergateway), which provides more reliable connectivity when used with Cursor's MCP integration.
-
 ## Quick Start
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
-- An Outline account with API access
+- Node.js (v20 or higher)
+- Outline account with API access
 - Outline API key with appropriate permissions
+- Note: if you need to use the AI-powered ask feature, you must enable the "AI Answers" feature in your Outline Workspace settings
 
 ### Installation
 
 ```bash
-# Run directly with npx
-OUTLINE_API_KEY=… npx outline-mcp-server
+# (preferred) Run directly with npx
+OUTLINE_API_KEY=... npx outline-mcp-server
 
 # or install from npm
 npm install -g outline-mcp-server
-OUTLINE_API_KEY=… outline-mcp-server
-
-# Run with a custom port (default is 6060)
-OUTLINE_API_KEY=… outline-mcp-server --port 7070
+OUTLINE_API_KEY=... outline-mcp-server
 ```
 
 ### Env
 
 - `OUTLINE_API_KEY` (_required_): your API key for outline, duh
 - `OUTLINE_API_URL` (_optional_): Alternative URL for your outline API (if using an alt domain/self-hosting)
-
-### CLI Options
-
-- `--port <number>` (_optional_): Specify the port on which the server will run (default: 6060)
+- `OUTLINE_MCP_PORT` (_optional_): Specify the port on which the server will run (default: 6060)
 
 ### Usage
 
@@ -78,6 +73,16 @@ Example queries your AI assistant can now handle:
 - "Create a template from an existing document"
 - "Update the content of a document"
 - "Add a comment to a document"
+
+### Run the MCP server
+
+```bash
+# Default port 6060
+OUTLINE_API_KEY=... npm run start:http
+
+# Or specify a custom port
+OUTLINE_API_KEY=... OUTLINE_MCP_PORT=9001 npm run start:http
+```
 
 ## Development
 
@@ -94,13 +99,15 @@ npm install
 
 ```
 OUTLINE_API_KEY=your_outline_api_key_here
-OUTLINE_API_URL=https://your-outline-instance.com/api  # Optional, defaults to https://app.getoutline.com/api
+
+# Optional -------
+# OUTLINE_API_URL=https://your-outline-instance.com/api # defaults to https://app.getoutline.com/api
+# OUTLINE_MCP_PORT=9001
 ```
 
 ```bash
 # Builds/watches the project alongside running @modelcontextprotocol/inspector
 npm run dev
-
 ```
 
 ## Contributing

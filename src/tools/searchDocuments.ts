@@ -1,31 +1,18 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { SearchDocumentsArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<SearchDocumentsArgs>({
+toolRegistry.register('search_documents', {
   name: 'search_documents',
   description: 'Search for documents in the Outline workspace',
   inputSchema: {
-    properties: {
-      query: {
-        type: 'string',
-        description: 'Search query to filter documents',
-      },
-      collectionId: {
-        type: 'string',
-        description: 'Filter by collection ID (optional)',
-      },
-      limit: {
-        type: 'number',
-        description: 'Maximum number of documents to return (optional)',
-      },
-    },
-    required: ['query'],
-    type: 'object',
+    query: z.string().describe('Search query to filter documents'),
+    collectionId: z.string().describe('Filter by collection ID (optional)').optional(),
+    limit: z.number().describe('Maximum number of documents to return (optional)').optional(),
   },
-  handler: async function handleSearchDocuments(args: SearchDocumentsArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         query: args.query,
@@ -40,7 +27,12 @@ registerTool<SearchDocumentsArgs>({
       }
 
       const response = await outlineClient.post('/documents.search', payload);
-      return response.data.data;
+      return {
+        content: [
+          { type: 'text', text: `documents: ${JSON.stringify(response.data.data)}` },
+          { type: 'text', text: `pagination: ${JSON.stringify(response.data.pagination)}` },
+        ],
+      };
     } catch (error: any) {
       console.error('Error searching documents:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

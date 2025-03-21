@@ -1,44 +1,24 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { CreateDocumentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<CreateDocumentArgs>({
+toolRegistry.register('create_document', {
   name: 'create_document',
   description: 'Create a new document',
   inputSchema: {
-    properties: {
-      title: {
-        type: 'string',
-        description: 'Title of the document',
-      },
-      text: {
-        type: 'string',
-        description: 'Content of the document in markdown format',
-      },
-      collectionId: {
-        type: 'string',
-        description: 'ID of the collection to add the document to',
-      },
-      parentDocumentId: {
-        type: 'string',
-        description: 'ID of the parent document (if creating a nested document)',
-      },
-      publish: {
-        type: 'boolean',
-        default: true,
-        description: 'Whether to publish the document immediately',
-      },
-      template: {
-        type: 'boolean',
-        description: 'Whether this document is a template',
-      },
-    },
-    required: ['title', 'text', 'collectionId'],
-    type: 'object',
+    title: z.string().describe('Title of the document'),
+    text: z.string().describe('Content of the document in markdown format'),
+    collectionId: z.string().describe('ID of the collection to add the document to'),
+    parentDocumentId: z
+      .string()
+      .describe('ID of the parent document (if creating a nested document)')
+      .optional(),
+    publish: z.boolean().describe('Whether to publish the document immediately').optional(),
+    template: z.boolean().describe('Whether this document is a template').optional(),
   },
-  handler: async function handleCreateDocument(args: CreateDocumentArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         title: args.title,
@@ -59,7 +39,7 @@ registerTool<CreateDocumentArgs>({
       }
 
       const response = await outlineClient.post('/documents', payload);
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error creating document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

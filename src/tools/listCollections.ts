@@ -1,22 +1,16 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { ListCollectionsArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<ListCollectionsArgs>({
+toolRegistry.register('list_collections', {
   name: 'list_collections',
   description: 'List all collections in the Outline workspace',
   inputSchema: {
-    properties: {
-      limit: {
-        type: 'number',
-        description: 'Maximum number of collections to return (optional)',
-      },
-    },
-    type: 'object',
+    limit: z.number().describe('Maximum number of collections to return (optional)').optional(),
   },
-  handler: async function handleListCollections(args: ListCollectionsArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {};
 
@@ -25,7 +19,18 @@ registerTool<ListCollectionsArgs>({
       }
 
       const response = await outlineClient.post('/collections.list', payload);
-      return response.data.data;
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `collections: ${JSON.stringify(response.data.data)}`,
+          },
+          {
+            type: 'text',
+            text: `pagination: ${JSON.stringify(response.data.pagination)}`,
+          },
+        ],
+      };
     } catch (error: any) {
       console.error('Error listing collections:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

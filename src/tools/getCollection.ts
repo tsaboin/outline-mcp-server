@@ -1,26 +1,19 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { GetCollectionArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<GetCollectionArgs>({
+toolRegistry.register('get_collection', {
   name: 'get_collection',
   description: 'Get details about a specific collection',
   inputSchema: {
-    properties: {
-      id: {
-        type: 'string',
-        description: 'ID of the collection to retrieve',
-      },
-    },
-    required: ['id'],
-    type: 'object',
+    id: z.string().describe('ID of the collection to retrieve'),
   },
-  handler: async function handleGetCollection(args: GetCollectionArgs) {
+  async callback(args) {
     try {
       const response = await outlineClient.post(`/collections.info`, { id: args.id });
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error getting collection:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

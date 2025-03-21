@@ -1,59 +1,34 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { ListDocumentsArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<ListDocumentsArgs>({
+toolRegistry.register('list_documents', {
   name: 'list_documents',
   description: 'List documents in the Outline workspace with optional filters',
   inputSchema: {
-    properties: {
-      collectionId: {
-        type: 'string',
-        description: 'Filter by collection ID (optional)',
-      },
-      query: {
-        type: 'string',
-        description: 'Search query to filter documents (optional)',
-      },
-      limit: {
-        type: 'number',
-        description: 'Maximum number of documents to return (optional)',
-      },
-      offset: {
-        type: 'number',
-        description: 'Pagination offset (optional)',
-      },
-      sort: {
-        type: 'string',
-        description: 'Field to sort by (e.g. "updatedAt") (optional)',
-      },
-      direction: {
-        type: 'string',
-        description: 'Sort direction, either "ASC" or "DESC" (optional)',
-        enum: ['ASC', 'DESC'],
-      },
-      template: {
-        type: 'boolean',
-        description: 'Optionally filter to only templates (optional)',
-      },
-      userId: {
-        type: 'string',
-        description: 'Optionally filter by user ID (optional)',
-      },
-      parentDocumentId: {
-        type: 'string',
-        description: 'Optionally filter by parent document ID (optional)',
-      },
-      backlinkDocumentId: {
-        type: 'string',
-        description: 'Optionally filter by backlink document ID (optional)',
-      },
-    },
-    type: 'object',
+    collectionId: z.string().describe('Filter by collection ID (optional)').optional(),
+    query: z.string().describe('Search query to filter documents (optional)').optional(),
+    limit: z.number().describe('Maximum number of documents to return (optional)').optional(),
+    offset: z.number().describe('Pagination offset (optional)').optional(),
+    sort: z.string().describe('Field to sort by (e.g. "updatedAt") (optional)').optional(),
+    direction: z
+      .enum(['ASC', 'DESC'])
+      .describe('Sort direction, either "ASC" or "DESC" (optional)')
+      .optional(),
+    template: z.boolean().describe('Optionally filter to only templates (optional)').optional(),
+    userId: z.string().describe('Optionally filter by user ID (optional)').optional(),
+    parentDocumentId: z
+      .string()
+      .describe('Optionally filter by parent document ID (optional)')
+      .optional(),
+    backlinkDocumentId: z
+      .string()
+      .describe('Optionally filter by backlink document ID (optional)')
+      .optional(),
   },
-  handler: async function handleListDocuments(args: ListDocumentsArgs) {
+  async callback(args) {
     try {
       // Create the payload object
       const payload: Record<string, any> = {
@@ -85,13 +60,16 @@ registerTool<ListDocumentsArgs>({
 
       // Return the documents with additional metadata
       return {
-        documents,
-        pagination: {
-          offset: response.data.pagination.offset,
-          limit: response.data.pagination.limit,
-          nextPath: response.data.pagination.nextPath,
-          totalCount: response.data.pagination.totalCount,
-        },
+        content: [
+          {
+            type: 'text',
+            text: `documents: ${JSON.stringify(documents)}`,
+          },
+          {
+            type: 'text',
+            text: `pagination: ${JSON.stringify(response.data.pagination)}`,
+          },
+        ],
       };
     } catch (error: any) {
       console.error('Error listing documents:', error.message);

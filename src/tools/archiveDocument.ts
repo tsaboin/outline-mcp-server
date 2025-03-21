@@ -1,28 +1,21 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { ArchiveDocumentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import { z } from 'zod';
 
 // Register this tool
-registerTool<ArchiveDocumentArgs>({
+toolRegistry.register('archive-document', {
   name: 'archive_document',
   description: 'Archive a document',
   inputSchema: {
-    properties: {
-      id: {
-        type: 'string',
-        description: 'ID of the document to archive',
-      },
-    },
-    required: ['id'],
-    type: 'object',
+    id: z.string().describe('ID of the document to archive'),
   },
-  handler: async function handleArchiveDocument(args: ArchiveDocumentArgs) {
+  async callback(args) {
     try {
       const response = await outlineClient.post('/documents.archive', {
         id: args.id,
       });
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error archiving document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

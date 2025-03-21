@@ -1,35 +1,22 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { CreateCommentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<CreateCommentArgs>({
+toolRegistry.register('create_comment', {
   name: 'create_comment',
   description: 'Create a new comment on a document',
   inputSchema: {
-    properties: {
-      documentId: {
-        type: 'string',
-        description: 'ID of the document to comment on',
-      },
-      text: {
-        type: 'string',
-        description: 'Content of the comment in markdown format',
-      },
-      parentCommentId: {
-        type: 'string',
-        description: 'ID of the parent comment (if replying to a comment)',
-      },
-      data: {
-        type: 'object',
-        description: 'Additional data for the comment (optional)',
-      },
-    },
-    required: ['documentId', 'text'],
-    type: 'object',
+    documentId: z.string().describe('ID of the document to comment on'),
+    text: z.string().describe('Content of the comment in markdown format'),
+    parentCommentId: z
+      .string()
+      .describe('ID of the parent comment (if replying to a comment)')
+      .optional(),
+    data: z.object({}).describe('Additional data for the comment (optional)').optional(),
   },
-  handler: async function handleCreateComment(args: CreateCommentArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         documentId: args.documentId,
@@ -45,7 +32,7 @@ registerTool<CreateCommentArgs>({
       }
 
       const response = await outlineClient.post('/comments.create', payload);
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error creating comment:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

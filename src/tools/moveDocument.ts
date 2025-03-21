@@ -1,31 +1,24 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { MoveDocumentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<MoveDocumentArgs>({
+toolRegistry.register('move_document', {
   name: 'move_document',
   description: 'Move a document to a different collection or parent document',
   inputSchema: {
-    properties: {
-      id: {
-        type: 'string',
-        description: 'ID of the document to move',
-      },
-      collectionId: {
-        type: 'string',
-        description: 'ID of the collection to move the document to (optional)',
-      },
-      parentDocumentId: {
-        type: 'string',
-        description: 'ID of the parent document to move under (optional)',
-      },
-    },
-    required: ['id'],
-    type: 'object',
+    id: z.string().describe('ID of the document to move'),
+    collectionId: z
+      .string()
+      .describe('ID of the collection to move the document to (optional)')
+      .optional(),
+    parentDocumentId: z
+      .string()
+      .describe('ID of the parent document to move under (optional)')
+      .optional(),
   },
-  handler: async function handleMoveDocument(args: MoveDocumentArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         id: args.id,
@@ -40,7 +33,7 @@ registerTool<MoveDocumentArgs>({
       }
 
       const response = await outlineClient.post('/documents.move', payload);
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error moving document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

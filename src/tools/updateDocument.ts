@@ -1,39 +1,20 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { UpdateDocumentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<UpdateDocumentArgs>({
+toolRegistry.register('update_document', {
   name: 'update_document',
   description: 'Update an existing document',
   inputSchema: {
-    properties: {
-      documentId: {
-        type: 'string',
-        description: 'ID of the document to update',
-      },
-      title: {
-        type: 'string',
-        description: 'New title for the document',
-      },
-      text: {
-        type: 'string',
-        description: 'New content for the document in markdown format',
-      },
-      publish: {
-        type: 'boolean',
-        description: 'Whether to publish the document',
-      },
-      done: {
-        type: 'boolean',
-        description: 'Whether the document is marked as done',
-      },
-    },
-    required: ['documentId'],
-    type: 'object',
+    documentId: z.string().describe('ID of the document to update'),
+    title: z.string().describe('New title for the document').optional(),
+    text: z.string().describe('New content for the document in markdown format').optional(),
+    publish: z.boolean().describe('Whether to publish the document').optional(),
+    done: z.boolean().describe('Whether the document is marked as done').optional(),
   },
-  handler: async function handleUpdateDocument(args: UpdateDocumentArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {
         id: args.documentId,
@@ -56,7 +37,7 @@ registerTool<UpdateDocumentArgs>({
       }
 
       const response = await outlineClient.post('/documents.update', payload);
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error updating document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

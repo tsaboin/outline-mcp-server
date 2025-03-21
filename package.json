@@ -1,11 +1,10 @@
 {
   "name": "outline-mcp-server",
-  "version": "4.12.2",
+  "version": "4.12.3",
   "description": "An MCP server for interacting with Outline's API",
   "type": "module",
   "bin": {
-    "outline-mcp-server": "./bin/cli.js",
-    "outline-mcp-server-stdio": "./build/index.js"
+    "outline-mcp-server": "./build/index.js"
   },
   "files": [
     "build",
@@ -20,34 +19,32 @@
     "url": "https://github.com/mmmeff/outline-mcp-server"
   },
   "scripts": {
-    "build": "tsc && chmod +x build/index.js && chmod +x bin/cli.js",
+    "build": "tsc && chmod +x build/index.js",
     "prepare": "npm run build",
-    "watch": "npm run build && tsc --watch",
-    "dev": "concurrently -n 'build,inspector' -c 'blue.bold,green.bold' 'npm run watch' 'npx @modelcontextprotocol/inspector build/index.js'",
-    "start:stdio": "npm run build && echo 'build done. running...\n' && node build/index.js",
-    "start": "npx -y supergateway --port 6060 --stdio \"npm run start:stdio\"",
+    "watch": "bun --watch src/index.ts",
+    "dev": "concurrently -n 'build,inspector' -c 'blue.bold,green.bold' 'npm run watch' 'npm run inspector'",
+    "inspector": "npx @modelcontextprotocol/inspector@latest -y",
+    "start": "bun build/index.js",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
-    "semantic-release": "semantic-release",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug"
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "0.6.0",
-    "axios": "^1.6.0",
-    "dotenv": "16.4.7",
-    "omit-ts": "^2.0.1"
+    "@modelcontextprotocol/sdk": "1.12.1",
+    "axios": "1.9.0",
+    "bun": "^1.2.15",
+    "dotenv": "16.5.0",
+    "fastify": "^4.28.1",
+    "omit-ts": "^2.0.1",
+    "zod": "3.25.61"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.6.0",
-    "@playwright/test": "^1.42.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/node": "^20.11.24",
+    "@types/node": "20.x",
     "concurrently": "^9.1.2",
     "prettier": "^3.2.5",
     "semantic-release": "^22.0.12",
-    "typescript": "^5.3.3"
+    "typescript": "5.x"
   },
   "keywords": [
     "outline",
@@ -57,6 +54,6 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

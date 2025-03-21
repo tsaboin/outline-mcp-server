@@ -1,56 +1,35 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { ListUsersArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<ListUsersArgs>({
+toolRegistry.register('list_users', {
   name: 'list_users',
   description: 'List all users in the Outline workspace',
   inputSchema: {
-    properties: {
-      offset: {
-        type: 'number',
-        description: 'Pagination offset (optional)',
-      },
-      limit: {
-        type: 'number',
-        description: 'Maximum number of users to return (optional)',
-      },
-      sort: {
-        type: 'string',
-        description: 'Field to sort by (e.g. "name", "email", "createdAt") (optional)',
-      },
-      direction: {
-        type: 'string',
-        description: 'Sort direction, either "ASC" or "DESC" (optional)',
-        enum: ['ASC', 'DESC'],
-      },
-      query: {
-        type: 'string',
-        description: 'Search query to filter users (optional)',
-      },
-      emails: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-        description: 'Filter by email addresses (optional)',
-      },
-      filter: {
-        type: 'string',
-        description: 'Filter by user status (optional)',
-        enum: ['all', 'invited', 'active', 'suspended'],
-      },
-      role: {
-        type: 'string',
-        description: 'Filter by user role (optional)',
-        enum: ['admin', 'member', 'viewer', 'guest'],
-      },
-    },
-    type: 'object',
+    offset: z.number().describe('Pagination offset (optional)').optional(),
+    limit: z.number().describe('Maximum number of users to return (optional)').optional(),
+    sort: z
+      .string()
+      .describe('Field to sort by (e.g. "name", "email", "createdAt") (optional)')
+      .optional(),
+    direction: z
+      .enum(['ASC', 'DESC'])
+      .describe('Sort direction, either "ASC" or "DESC" (optional)')
+      .optional(),
+    query: z.string().describe('Search query to filter users (optional)').optional(),
+    emails: z.array(z.string()).describe('Filter by email addresses (optional)').optional(),
+    filter: z
+      .enum(['all', 'invited', 'active', 'suspended'])
+      .describe('Filter by user status (optional)')
+      .optional(),
+    role: z
+      .enum(['admin', 'member', 'viewer', 'guest'])
+      .describe('Filter by user role (optional)')
+      .optional(),
   },
-  handler: async function handleListUsers(args: ListUsersArgs) {
+  async callback(args) {
     try {
       const payload: Record<string, any> = {};
 
@@ -87,7 +66,12 @@ registerTool<ListUsersArgs>({
       }
 
       const response = await outlineClient.post('/users.list', payload);
-      return response.data.data;
+      return {
+        content: [
+          { type: 'text', text: `users: ${JSON.stringify(response.data.data)}` },
+          { type: 'text', text: `pagination: ${JSON.stringify(response.data.pagination)}` },
+        ],
+      };
     } catch (error: any) {
       console.error('Error listing users:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

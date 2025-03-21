@@ -1,27 +1,21 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../client.js';
-import { GetDocumentArgs } from '../types.js';
-import { registerTool } from '../utils/listTools.js';
+import { outlineClient } from '../outline/outlineClient.js';
+import toolRegistry from '../utils/toolRegistry.js';
+import z from 'zod';
 
 // Register this tool
-registerTool<GetDocumentArgs>({
+toolRegistry.register('get_document', {
   name: 'get_document',
   description: 'Get details about a specific document. At least id XOR shareId are required.',
   inputSchema: {
-    properties: {
-      id: {
-        type: 'string',
-        description:
-          'Unique identifier for the document. Either the UUID or the urlId is acceptable',
-      },
-    },
-    required: ['id'],
-    type: 'object',
+    id: z
+      .string()
+      .describe('Unique identifier for the document. Either the UUID or the urlId is acceptable'),
   },
-  handler: async function handleGetDocument(args: GetDocumentArgs) {
+  async callback(args) {
     try {
       const response = await outlineClient.post('/documents.info', { id: args.id });
-      return response.data.data;
+      return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error getting document:', error.message);
       throw new McpError(ErrorCode.InvalidRequest, error.message);

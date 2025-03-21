@@ -1,85 +1,63 @@
-#!/usr/bin/env node
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import fastify from 'fastify';
+import { getMcpServer } from './utils/getMcpServer.js';
 
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import {
-  CallToolRequestSchema,
-  ErrorCode,
-  ListToolsRequestSchema,
-  McpError,
-} from '@modelcontextprotocol/sdk/types.js';
+const server = fastify();
 
-import { registerTools } from './utils/importTools.js';
-import { omit } from 'omit-ts';
-
-// Dynamically import all tool files
-const toolDefinitions = await registerTools();
-
-console.log(
-  '\n',
-  `loaded ${Object.keys(toolDefinitions).length} tools`,
-  JSON.stringify(Object.keys(toolDefinitions)),
-  '\n'
-);
-
-const server = new Server(
-  {
-    name: 'outline-mcp',
-    version: '1.0.0',
-  },
-  {
-    capabilities: {
-      tools: Object.entries(toolDefinitions).reduce(
-        (acc, [name, definition]) => {
-          acc[name] = true;
-          return acc;
-        },
-        {} as Record<string, boolean>
-      ),
-    },
-  }
-);
-
-// Register request handlers
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: Object.values(toolDefinitions).map(x => omit(x, ['handler'])),
-}));
-
-server.setRequestHandler(CallToolRequestSchema, async request => {
-  const { params } = request;
-  const toolName = params.name;
-  const parameters = params.arguments || {};
-
-  const toolDefinition = toolDefinitions[toolName];
-
+// Stateless mode (default, recommended for most deployments)
+server.post('/mcp', async (request, reply) => {
   try {
-    // Check if the tool is supported
-    if (!toolDefinition) {
-      return {
-        error: { code: ErrorCode.InvalidRequest, message: `Tool ${toolName} not supported` },
-      };
-    }
-
-    // Call the handler with the provided parameters
-    const result = await toolDefinition.handler(parameters);
-    return {
-      content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
-    };
+    const mcpServer = await getMcpServer();
+    const httpTransport: StreamableHTTPServerTransport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+    });
+    reply.raw.on('close', () => {
+      httpTransport.close();
+      mcpServer.close();
+    });
+    await mcpServer.connect(httpTransport);
+    await httpTransport.handleRequest(request.raw, reply.raw, request.body);
   } catch (error) {
-    if (error instanceof McpError) {
-      return { error: { code: error.code, message: error.message } };
+    if (!reply.sent) {
+      reply.code(500).send({
+        jsonrpc: '2.0',
+        error: {
+          code: -32603,
+          message: 'Internal server error',
+        },
+        id: null,
+      });
     }
-    return { error: { code: ErrorCode.InternalError, message: (error as Error).message } };
   }
 });
 
-async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.log('Outline MCP server running on stdio');
-}
+server.get('/mcp', async (request, reply) => {
+  reply.code(405).send({
+    jsonrpc: '2.0',
+    error: {
+      code: -32000,
+      message: 'Method not allowed.',
+    },
+    id: null,
+  });
+});
 
-main().catch(error => {
-  console.error('Server error:', error);
-  process.exit(1);
+server.delete('/mcp', async (request, reply) => {
+  reply.code(405).send({
+    jsonrpc: '2.0',
+    error: {
+      code: -32000,
+      message: 'Method not allowed.',
+    },
+    id: null,
+  });
+});
+
+const PORT = process.env.OUTLINE_MCP_PORT ? parseInt(process.env.OUTLINE_MCP_PORT, 10) : 6060;
+server.listen({ port: PORT }, (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Outline MCP Server (streamable-http) running at ${address}/mcp`);
 });
