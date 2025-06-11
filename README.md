@@ -1,10 +1,7 @@
 # Outline MCP Server
 
 A Model Context Protocol (MCP) server that provides tools for interacting with [Outline](https://www.getoutline.com/)'s API, enabling AI agents to manage documents, collections, and other entities programmatically through the Outline knowledge base platform.
-
-> **Upgrade Notice:**
-
-- v5 has introduced several breaking changes:
+## 🚨 __**Upgrade Notice:**__ v5 has introduced several breaking changes: 🚨
   - support has been dropped for both `stdio` and `sse` transport interfaces. This server now solely exposes a [Streamable HTTP endpoint](https://modelcontextprotocol.io/specification/draft/basic/transports#streamable-http) at the `/mcp` route. If you require sse/stdio, downgrade to v4
   - the `--port` CLI flag has been migrated to an environment variable, `OUTLINE_MCP_PORT`
   - Minimum node version has been bumped to 20
