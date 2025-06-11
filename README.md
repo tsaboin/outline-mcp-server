@@ -5,8 +5,9 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
 > **Upgrade Notice:**
 
 - v5 has introduced several breaking changes:
-  - this server support for both `stdio` and `sse` transport interfaces. It now solely exposes a [Streamable HTTP endpoint](https://modelcontextprotocol.io/specification/draft/basic/transports#streamable-http) at the `/mcp` route. If you require sse/stdio, downgrade to v4
+  - support has been dropped for both `stdio` and `sse` transport interfaces. This server now solely exposes a [Streamable HTTP endpoint](https://modelcontextprotocol.io/specification/draft/basic/transports#streamable-http) at the `/mcp` route. If you require sse/stdio, downgrade to v4
   - the `--port` CLI flag has been migrated to an environment variable, `OUTLINE_MCP_PORT`
+  - Minmum node version has been bumped to 20
 
 ## Features
 
