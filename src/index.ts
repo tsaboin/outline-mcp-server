@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import fastify from 'fastify';
 import { getMcpServer } from './utils/getMcpServer.js';
