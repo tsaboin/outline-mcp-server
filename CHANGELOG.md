@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.0.0...v5.0.1) (2025-06-11)
+
+
+### Bug Fixes
+
+* **cli:** fix CLI missing shebang ([8c320de](https://github.com/mmmeff/outline-mcp-server/commit/8c320dea175add923291887371fbe4daa0ab5afd))
+
 # [5.0.0](https://github.com/mmmeff/outline-mcp-server/compare/v4.12.2...v5.0.0) (2025-06-11)
 
 
