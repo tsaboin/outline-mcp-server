@@ -1,3 +1,22 @@
+# [5.0.0](https://github.com/mmmeff/outline-mcp-server/compare/v4.12.2...v5.0.0) (2025-06-11)
+
+
+### Bug Fixes
+
+* **docs:** correct API URL env var name in README ([a2854f8](https://github.com/mmmeff/outline-mcp-server/commit/a2854f8ae9bea56d2183dc93c59187fe32882ce0))
+
+
+* BREAKING CHANGE: feat(server): Migrate SSE and STDIO transports to single Streamble HTTP endpoint ([4012979](https://github.com/mmmeff/outline-mcp-server/commit/4012979a428212fa7c7c2abb28bea8dde670c23b))
+
+
+### BREAKING CHANGES
+
+* chore(deps): Updated minimum node version to 20
+* refactor(args): Removed --port CLI flag in favor of OUTLINE_MCP_PORT env var
+chore(deps): updated dependencies across the package
+chore(test): removed busted janky e2e tests until they can be rewritten against mcp-inspector's CLI as integ
+perf(server): swapped out node runtime with bun for bin
+
 ## [4.12.3](https://github.com/mmmeff/outline-mcp-server/compare/v4.12.2...v4.12.3) (2025-03-21)
 
 
