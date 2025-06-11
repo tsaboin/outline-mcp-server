@@ -23,7 +23,7 @@
     "prepare": "npm run build",
     "watch": "bun --watch src/index.ts",
     "dev": "concurrently -n 'build,inspector' -c 'blue.bold,green.bold' 'npm run watch' 'npm run inspector'",
-    "inspector": "npx @modelcontextprotocol/inspector@latest -y",
+    "inspector": "npx @modelcontextprotocol/inspector@latest",
     "start": "bun build/index.js",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
     "semantic-release": "semantic-release"
