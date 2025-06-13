@@ -1,3 +1,10 @@
+# [5.1.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.0.1...v5.1.0) (2025-06-13)
+
+
+### Features
+
+* **sse:** re-introduce sse backwards compatibility ([0141b3b](https://github.com/mmmeff/outline-mcp-server/commit/0141b3bf89c24072ecad5d4bcdaf5763cab7bf45))
+
 ## [5.0.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.0.0...v5.0.1) (2025-06-11)
 
 
