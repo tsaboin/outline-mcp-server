@@ -1,14 +1,15 @@
 #!/usr/bin/env bun
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import fastify from 'fastify';
 import { getMcpServer } from './utils/getMcpServer.js';
 
-const server = fastify();
+const app = fastify();
+const mcpServer = await getMcpServer();
 
 // Stateless mode (default, recommended for most deployments)
-server.post('/mcp', async (request, reply) => {
+app.post('/mcp', async (request, reply) => {
   try {
-    const mcpServer = await getMcpServer();
     const httpTransport: StreamableHTTPServerTransport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
     });
@@ -32,7 +33,7 @@ server.post('/mcp', async (request, reply) => {
   }
 });
 
-server.get('/mcp', async (request, reply) => {
+app.get('/mcp', async (request, reply) => {
   reply.code(405).send({
     jsonrpc: '2.0',
     error: {
@@ -43,7 +44,7 @@ server.get('/mcp', async (request, reply) => {
   });
 });
 
-server.delete('/mcp', async (request, reply) => {
+app.delete('/mcp', async (request, reply) => {
   reply.code(405).send({
     jsonrpc: '2.0',
     error: {
@@ -52,10 +53,43 @@ server.delete('/mcp', async (request, reply) => {
     },
     id: null,
   });
+});
+
+// Legacy SSE endpoint for older clients
+let sseTransport: SSEServerTransport | null = null;
+app.get('/sse', async (request, reply) => {
+  try {
+    // Create SSE transport for legacy clients
+    if (!sseTransport) {
+      sseTransport = new SSEServerTransport('/messages', reply.raw);
+      await mcpServer.connect(sseTransport);
+    }
+  } catch (error) {
+    console.error(error);
+    if (!reply.sent) {
+      reply.code(500).send({
+        jsonrpc: '2.0',
+        error: {
+          code: -32603,
+          message: 'Internal server error',
+        },
+        id: null,
+      });
+    }
+  }
+});
+
+// Legacy message endpoint for older clients
+app.post('/messages', async (req, res) => {
+  if (!sseTransport) {
+    res.status(400).send('No transport found');
+    return;
+  }
+  await sseTransport.handlePostMessage(req.raw, res.raw, req.body);
 });
 
 const PORT = process.env.OUTLINE_MCP_PORT ? parseInt(process.env.OUTLINE_MCP_PORT, 10) : 6060;
-server.listen({ port: PORT }, (err, address) => {
+app.listen({ port: PORT }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
