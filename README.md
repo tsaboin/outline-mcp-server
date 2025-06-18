@@ -1,5 +1,7 @@
 # Outline MCP Server
 
+![npm](https://img.shields.io/npm/v/outline-mcp-server) | ![downloads](https://img.shields.io/npm/dy/outline-mcp-server)
+
 A Model Context Protocol (MCP) server that provides tools for interacting with [Outline](https://www.getoutline.com/)'s API, enabling AI agents to manage documents, collections, and other entities programmatically through the Outline knowledge base platform.
 
 ## 🚨 \***\*Upgrade Notice:\*\*** v5 has introduced several breaking changes: 🚨
