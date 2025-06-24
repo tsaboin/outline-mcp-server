@@ -1,3 +1,10 @@
+# [5.2.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.1.0...v5.2.0) (2025-06-24)
+
+
+### Features
+
+* **stdio:** re-introduce stdio support ([a709cd2](https://github.com/mmmeff/outline-mcp-server/commit/a709cd2cd67a0acd7d48fdb6620776ee0a3aad61))
+
 # [5.1.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.0.1...v5.1.0) (2025-06-13)
 
 
