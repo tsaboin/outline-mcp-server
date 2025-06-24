@@ -48,14 +48,16 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
 - Outline API key with appropriate permissions
 - Note: if you need to use the AI-powered ask feature, you must enable the "AI Answers" feature in your Outline Workspace settings
 
-### Running directly
+### Running
+
+`outline-mcp-server` supports the latest streamable-http protocol, the deprecated sse protocol, and good ole fashioned stdio.
 
 ```bash
 # S-HTTP/SSE servers
-OUTLINE_API_KEY=... npx outline-mcp-server@latest -y
+OUTLINE_API_KEY=... npx -y outline-mcp-server@latest
 
 # STDIO
-OUTLINE_API_KEY=... npx outline-mcp-server-stdio@latest -y
+OUTLINE_API_KEY=... npx -y --package=outline-mcp-server@latest -c outline-mcp-server-stdio
 ```
 
 ### Cursor (mcp.json)
