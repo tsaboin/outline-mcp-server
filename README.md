@@ -1,18 +1,16 @@
 # Outline MCP Server
 
-![npm](https://img.shields.io/npm/v/outline-mcp-server) | ![downloads](https://img.shields.io/npm/dy/outline-mcp-server)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=outline&config=eyJjb21tYW5kIjoibnB4IC15IG91dGxpbmUtbWNwLXNlcnZlci1zdGRpb0BsYXRlc3QiLCJlbnYiOnsiT1VUTElORV9BUElfS0VZIjoiPFJFUExBQ0VfTUU%2BIiwiT1VUTElORV9BUElfVVJMIjoiaHR0cHM6Ly9hcHAuZ2V0b3V0bGluZS5jb20vYXBpIiwiT1VUTElORV9NQ1BfUE9SVCI6IjYwNjAifX0%3D)
+
+![npm](https://img.shields.io/npm/v/outline-mcp-server) • ![downloads](https://img.shields.io/npm/dy/outline-mcp-server)
 
 A Model Context Protocol (MCP) server that provides tools for interacting with [Outline](https://www.getoutline.com/)'s API, enabling AI agents to manage documents, collections, and other entities programmatically through the Outline knowledge base platform.
 
 ## 🚨 \***\*Upgrade Notice:\*\*** v5 has introduced several breaking changes: 🚨
 
-- support has been dropped for the `stdio` transport interfaces.
-  - This server now exposes:
-    - a [Streamable-HTTP endpoint](https://modelcontextprotocol.io/specification/draft/basic/transports#streamable-http) at the `/mcp` route.
-    - an SSE endpoint at `/sse`
-  - If you require stdio, downgrade to v4
 - the `--port` CLI flag has been migrated to an environment variable, `OUTLINE_MCP_PORT`
 - Minimum node version has been bumped to 20
+- sse & stdio were removed in 5.0.0 but later re-introduced in 5.1.0 and 5.2.0 respectively
 
 ## Features
 
@@ -53,18 +51,35 @@ A Model Context Protocol (MCP) server that provides tools for interacting with [
 - Outline API key with appropriate permissions
 - Note: if you need to use the AI-powered ask feature, you must enable the "AI Answers" feature in your Outline Workspace settings
 
-### Installation
+### Running directly
 
 ```bash
-# (preferred) Run directly with npx
-OUTLINE_API_KEY=... npx outline-mcp-server
+# S-HTTP/SSE servers
+OUTLINE_API_KEY=... npx outline-mcp-server@latest -y
 
-# or install from npm
-npm install -g outline-mcp-server
-OUTLINE_API_KEY=... outline-mcp-server
+# STDIO
+OUTLINE_API_KEY=... npx outline-mcp-server-stdio@latest -y
 ```
 
-### Env
+### Cursor (mcp.json)
+
+Add the following MCP definition to your configuration:
+
+```json
+{
+  "outline": {
+    "command": "npx",
+    "args": ["-y", "outline-mcp-server-stdio@latest"],
+    "env": {
+      "OUTLINE_API_KEY": "<REPLACE_ME>",
+      "OUTLINE_API_URL": "https://app.getoutline.com/api",
+      "OUTLINE_MCP_PORT": "6060"
+    }
+  }
+}
+```
+
+### Env vars
 
 - `OUTLINE_API_KEY` (_required_): your API key for outline, duh
 - `OUTLINE_API_URL` (_optional_): Alternative URL for your outline API (if using an alt domain/self-hosting)
@@ -83,16 +98,6 @@ Example queries your AI assistant can now handle:
 - "Create a template from an existing document"
 - "Update the content of a document"
 - "Add a comment to a document"
-
-### Run the MCP server
-
-```bash
-# Default port 6060
-OUTLINE_API_KEY=... npm run start:http
-
-# Or specify a custom port
-OUTLINE_API_KEY=... OUTLINE_MCP_PORT=9001 npm run start:http
-```
 
 ## Development
 
