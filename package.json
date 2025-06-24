@@ -4,7 +4,8 @@
   "description": "An MCP server for interacting with Outline's API",
   "type": "module",
   "bin": {
-    "outline-mcp-server": "./build/index.js"
+    "outline-mcp-server": "./build/index.js",
+    "outline-mcp-server-stdio": "./build/stdio.js"
   },
   "files": [
     "build"
@@ -18,9 +19,10 @@
     "url": "https://github.com/mmmeff/outline-mcp-server"
   },
   "scripts": {
-    "build": "tsc && chmod +x build/index.js",
+    "build": "tsc && chmod +x build/index.js && chmod +x build/stdio.js",
     "prepare": "npm run build",
     "watch": "bun --watch src/index.ts",
+    "watch:stdio": "bun --watch src/stdio.ts",
     "dev": "concurrently -n 'build,inspector' -c 'blue.bold,green.bold' 'npm run watch' 'npm run inspector'",
     "inspector": "npx @modelcontextprotocol/inspector@latest",
     "start": "bun build/index.js",

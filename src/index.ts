@@ -4,8 +4,10 @@ import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import fastify from 'fastify';
 import { getMcpServer } from './utils/getMcpServer.js';
 
-const app = fastify();
 const mcpServer = await getMcpServer();
+
+// HTTP mode - default behavior
+const app = fastify();
 
 // Stateless mode (default, recommended for most deployments)
 app.post('/mcp', async (request, reply) => {
@@ -94,5 +96,8 @@ app.listen({ port: PORT }, (err, address) => {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Outline MCP Server (streamable-http) running at ${address}/mcp`);
+  console.log(
+    `\n\nOutline MCP Server running:\n\tstreamable-http: ${address}/mcp\n\tsse (deprecated): ${address}/sse\n\n`
+  );
+  console.log('To use this MCP server in stdio mode, run it via `outline-mcp-server-stdio`.');
 });
