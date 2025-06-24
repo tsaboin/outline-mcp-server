@@ -1,3 +1,10 @@
+## [5.2.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.2.0...v5.2.1) (2025-06-24)
+
+
+### Bug Fixes
+
+* **docs:** correct malformed json in readme "Install MCP Server" link ([c7deb4e](https://github.com/mmmeff/outline-mcp-server/commit/c7deb4eb9454e8c5417e14b7bd8c082c57fe1bd2))
+
 # [5.2.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.1.0...v5.2.0) (2025-06-24)
 
 
