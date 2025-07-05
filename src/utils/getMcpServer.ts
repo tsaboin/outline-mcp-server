@@ -4,7 +4,7 @@ import { loadAllTools } from './loadAllTools.js';
 // Helper to create a new MCP server instance with all tools registered
 export async function getMcpServer() {
   const server = new McpServer({
-    name: 'outline-mcp',
+    name: process.env.npm_package_name || 'outline-mcp-server',
     version: process.env.npm_package_version || 'unknown',
     description: 'Outline Model Context Protocol server',
   });

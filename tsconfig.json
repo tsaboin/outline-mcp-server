@@ -4,7 +4,6 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    // "rewriteRelativeImportExtensions": true,
     "strict": true,
     "skipLibCheck": true,
     "outDir": "build",
@@ -13,7 +12,9 @@
     "declarationMap": false,
     "removeComments": false,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": ["ES2020"],
+    "typeRoots": ["./node_modules/@types"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "build"]

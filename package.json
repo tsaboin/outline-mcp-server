@@ -20,10 +20,12 @@
   },
   "scripts": {
     "build": "tsc && chmod +x build/index.js && chmod +x build/stdio.js",
+    "build:dxt": "./scripts/build-dxt.sh",
     "prepare": "npm run build",
     "watch": "bun --watch src/index.ts",
     "watch:stdio": "bun --watch src/stdio.ts",
     "dev": "concurrently -n 'build,inspector' -c 'blue.bold,green.bold' 'npm run watch' 'npm run inspector'",
+    "run-dxt": "dotenv bun src/dxt.ts",
     "inspector": "npx @modelcontextprotocol/inspector@latest",
     "start": "bun build/index.js",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
@@ -43,6 +45,7 @@
     "@types/node": "20.19.1",
     "bun": "^1.2.17",
     "concurrently": "^9.2.0",
+    "dotenv-cli": "^8.0.0",
     "prettier": "3.6.0",
     "semantic-release": "^22.0.12",
     "typescript": "5.x"
