@@ -1,3 +1,10 @@
+# [5.3.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.2.1...v5.3.0) (2025-07-05)
+
+
+### Features
+
+* **dxt:** add dxt build scripts ([0125018](https://github.com/mmmeff/outline-mcp-server/commit/01250185454bb930fd92af847a5bc88a9010a85f))
+
 ## [5.2.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.2.0...v5.2.1) (2025-06-24)
 
 
