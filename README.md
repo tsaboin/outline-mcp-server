@@ -1,16 +1,22 @@
 # Outline MCP Server
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=outline&config=eyJjb21tYW5kIjoibnB4IC15IC0tcGFja2FnZT1vdXRsaW5lLW1jcC1zZXJ2ZXJAbGF0ZXN0IC1jIG91dGxpbmUtbWNwLXNlcnZlci1zdGRpbyIsImVudiI6eyJPVVRMSU5FX0FQSV9LRVkiOiI8UkVQTEFDRV9NRT4iLCJPVVRMSU5FX0FQSV9VUkwiOiJodHRwczovL2FwcC5nZXRvdXRsaW5lLmNvbS9hcGkifX0%3D)
-
 ![npm](https://img.shields.io/npm/v/outline-mcp-server) • ![downloads](https://img.shields.io/npm/dy/outline-mcp-server)
 
 A Model Context Protocol (MCP) server that provides tools for interacting with [Outline](https://www.getoutline.com/)'s API, enabling AI agents to manage documents, collections, and other entities programmatically through the Outline knowledge base platform.
 
-## 🚨 \***\*Upgrade Notice:\*\*** v5 has introduced several breaking changes: 🚨
+## Quick Installation
 
-- the `--port` CLI flag has been migrated to an environment variable, `OUTLINE_MCP_PORT`
-- Minimum node version has been bumped to 20
-- sse & stdio were removed in 5.0.0 but later re-introduced in 5.1.0 and 5.2.0 respectively
+### Claude Desktop
+
+🎉 **`outline-mcp-server` now has an extension for Claude Desktop!**
+
+You can now download a Claude Desktop extension from the [releases page](https://github.com/mmmeff/outline-mcp/releases) for quick and easy setup (just double click it).
+
+### Cursor
+
+One click install in Cursor:
+
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=outline&config=eyJjb21tYW5kIjoibnB4IC15IC0tcGFja2FnZT1vdXRsaW5lLW1jcC1zZXJ2ZXJAbGF0ZXN0IC1jIG91dGxpbmUtbWNwLXNlcnZlci1zdGRpbyIsImVudiI6eyJPVVRMSU5FX0FQSV9LRVkiOiI8UkVQTEFDRV9NRT4iLCJPVVRMSU5FX0FQSV9VUkwiOiJodHRwczovL2FwcC5nZXRvdXRsaW5lLmNvbS9hcGkifX0%3D)
 
 ## Features
 
