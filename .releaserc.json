@@ -5,7 +5,17 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     "@semantic-release/npm",
-    "@semantic-release/github",
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "outline-mcp-extension.dxt",
+            "label": "Claude Desktop Extension (DXT)"
+          }
+        ]
+      }
+    ],
     [
       "@semantic-release/git",
       {
