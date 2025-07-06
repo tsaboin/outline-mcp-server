@@ -38,7 +38,7 @@ toolRegistry.register('create_document', {
         payload.template = args.template;
       }
 
-      const response = await outlineClient.post('/documents', payload);
+      const response = await outlineClient.post('/documents.create', payload);
       return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error creating document:', error.message);
