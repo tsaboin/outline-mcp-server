@@ -1,3 +1,10 @@
+## [5.3.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.3.0...v5.3.1) (2025-07-07)
+
+
+### Bug Fixes
+
+* **createDocument:** Merge pull request [#9](https://github.com/mmmeff/outline-mcp-server/issues/9) from eddywashere/patch-1 ([38e17f1](https://github.com/mmmeff/outline-mcp-server/commit/38e17f1b07e6a268f1486d38c67308c1c11af395))
+
 # [5.3.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.2.1...v5.3.0) (2025-07-05)
 
 
