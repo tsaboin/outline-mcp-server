@@ -78,7 +78,8 @@ Add the following MCP definition to your configuration:
     "env": {
       "OUTLINE_API_KEY": "<REPLACE_ME>",
       "OUTLINE_API_URL": "https://app.getoutline.com/api",
-      "OUTLINE_MCP_PORT": "6060"
+      "OUTLINE_MCP_PORT": "6060",
+      "OUTLINE_MCP_HOST": "127.0.0.1"
     }
   }
 }
@@ -89,6 +90,7 @@ Add the following MCP definition to your configuration:
 - `OUTLINE_API_KEY` (_required_): your API key for outline, duh
 - `OUTLINE_API_URL` (_optional_): Alternative URL for your outline API (if using an alt domain/self-hosting)
 - `OUTLINE_MCP_PORT` (_optional_): Specify the port on which the server will run (default: 6060)
+- `OUTLINE_MCP_HOST` (_optional_): Host/IP to bind the server to (default: 127.0.0.1). Use 0.0.0.0 to bind to all network interfaces
 
 ### Usage
 
