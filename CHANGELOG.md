@@ -1,3 +1,10 @@
+# [5.4.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.3.1...v5.4.0) (2025-07-10)
+
+
+### Features
+
+* **server:** add configurable host binding support ([578abbd](https://github.com/mmmeff/outline-mcp-server/commit/578abbd3e7a1d4d1f18b35981652bb370f804ce2))
+
 ## [5.3.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.3.0...v5.3.1) (2025-07-07)
 
 
