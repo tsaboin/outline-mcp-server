@@ -91,7 +91,8 @@ app.post('/messages', async (req, res) => {
 });
 
 const PORT = process.env.OUTLINE_MCP_PORT ? parseInt(process.env.OUTLINE_MCP_PORT, 10) : 6060;
-app.listen({ port: PORT }, (err, address) => {
+const HOST = process.env.OUTLINE_MCP_HOST || '127.0.0.1';
+app.listen({ port: PORT, host: HOST }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
