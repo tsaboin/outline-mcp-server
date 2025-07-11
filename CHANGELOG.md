@@ -1,3 +1,10 @@
+## [5.4.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.4.0...v5.4.1) (2025-07-11)
+
+
+### Bug Fixes
+
+* display correct host in console output ([4a346bd](https://github.com/mmmeff/outline-mcp-server/commit/4a346bd01bdfab8dd2ce4668fa1add81d19e917e))
+
 # [5.4.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.3.1...v5.4.0) (2025-07-10)
 
 
