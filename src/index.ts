@@ -98,7 +98,7 @@ app.listen({ port: PORT, host: HOST }, (err, address) => {
     process.exit(1);
   }
   console.log(
-    `\n\nOutline MCP Server running:\n\tstreamable-http: ${address}/mcp\n\tsse (deprecated): ${address}/sse\n\n`
+    `\n\nOutline MCP Server running:\n\tstreamable-http: http://${HOST}:${PORT}/mcp\n\tsse (deprecated): http://${HOST}:${PORT}/sse\n\n`
   );
   console.log('To use this MCP server in stdio mode, run it via `outline-mcp-server-stdio`.');
 });
