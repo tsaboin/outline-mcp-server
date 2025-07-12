@@ -1,3 +1,10 @@
+# [5.5.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.4.1...v5.5.0) (2025-07-12)
+
+
+### Features
+
+* **auth:** Support BYO API Keys via request headers (see README.md) ([92ef6f0](https://github.com/mmmeff/outline-mcp-server/commit/92ef6f05f6a59991fdddfeabe6b01b07929c87dc)), closes [#13](https://github.com/mmmeff/outline-mcp-server/issues/13)
+
 ## [5.4.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.4.0...v5.4.1) (2025-07-11)
 
 
