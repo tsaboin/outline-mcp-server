@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -17,7 +17,8 @@ toolRegistry.register('create_template_from_document', {
         id: args.id,
       };
 
-      const response = await outlineClient.post('/documents.templatize', payload);
+      const client = getOutlineClient();
+      const response = await client.post('/documents.templatize', payload);
       return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error creating template from document:', error.message);

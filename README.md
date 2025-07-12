@@ -59,12 +59,17 @@ One click install in Cursor:
 `outline-mcp-server` supports the latest streamable-http protocol, the deprecated sse protocol, and good ole fashioned stdio.
 
 ```bash
-# S-HTTP/SSE servers
+# S-HTTP/SSE servers (with optional env var)
 OUTLINE_API_KEY=... npx -y outline-mcp-server@latest
 
-# STDIO
+# S-HTTP/SSE servers (without env var, use headers for auth)
+npx -y outline-mcp-server@latest
+
+# STDIO (requires env var)
 OUTLINE_API_KEY=... npx -y --package=outline-mcp-server@latest -c outline-mcp-server-stdio
 ```
+
+When running HTTP/SSE servers without an environment variable, you'll need to provide the API key in your request headers. The server will display available authentication methods on startup.
 
 ### Cursor (mcp.json)
 
@@ -85,9 +90,33 @@ Add the following MCP definition to your configuration:
 }
 ```
 
+### Authentication
+
+The Outline MCP server supports two authentication methods:
+
+1. **Environment Variable (Required for stdio mode)**: Set `OUTLINE_API_KEY` as an environment variable
+2. **Request Headers (HTTP/SSE modes)**: Provide the API key in request headers
+
+For **stdio mode**, the API key environment variable is required and validated on startup.
+
+For **HTTP/SSE modes**, you have two options:
+
+- Set `OUTLINE_API_KEY` as an environment variable (fallback method)
+- Provide API key in request headers (recommended for per-request authentication)
+
+#### Header-based Authentication
+
+When using HTTP/SSE endpoints, you can provide the API key using any of these headers:
+
+- `x-outline-api-key: your_api_key_here`
+- `outline-api-key: your_api_key_here`
+- `authorization: Bearer your_api_key_here`
+
+If no header is provided, the server will fall back to the `OUTLINE_API_KEY` environment variable. If neither is available, the request will fail with an authentication error.
+
 ### Env vars
 
-- `OUTLINE_API_KEY` (_required_): your API key for outline, duh
+- `OUTLINE_API_KEY` (_required for stdio, optional for HTTP/SSE_): your API key for outline
 - `OUTLINE_API_URL` (_optional_): Alternative URL for your outline API (if using an alt domain/self-hosting)
 - `OUTLINE_MCP_PORT` (_optional_): Specify the port on which the server will run (default: 6060)
 - `OUTLINE_MCP_HOST` (_optional_): Host/IP to bind the server to (default: 127.0.0.1). Use 0.0.0.0 to bind to all network interfaces

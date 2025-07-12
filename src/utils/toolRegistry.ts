@@ -9,6 +9,43 @@ export type ToolDefinition<Args extends ZodRawShape, Output extends ZodRawShape>
   callback: ToolCallback<Args>;
 };
 
+// Context to store request-specific data
+export class RequestContext {
+  private static instance: RequestContext | null = null;
+  private context: Map<string, any> = new Map();
+
+  static getInstance(): RequestContext {
+    if (!RequestContext.instance) {
+      RequestContext.instance = new RequestContext();
+    }
+    return RequestContext.instance;
+  }
+
+  static resetInstance(): void {
+    RequestContext.instance = null;
+  }
+
+  set(key: string, value: any): void {
+    this.context.set(key, value);
+  }
+
+  get(key: string): any {
+    return this.context.get(key);
+  }
+
+  clear(): void {
+    this.context.clear();
+  }
+
+  getApiKey(): string | undefined {
+    return this.get('apiKey');
+  }
+
+  setApiKey(apiKey: string): void {
+    this.set('apiKey', apiKey);
+  }
+}
+
 class ToolRegistry {
   private registry: Map<string, ToolDefinition<any, any>> = new Map();
 

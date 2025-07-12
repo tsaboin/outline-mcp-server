@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -55,7 +55,8 @@ toolRegistry.register('ask_documents', {
         payload.dateFilter = args.dateFilter;
       }
 
-      const response = await outlineClient.post('/documents.answerQuestion', payload);
+      const client = getOutlineClient();
+      const response = await client.post('/documents.answerQuestion', payload);
       return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error asking documents:', error.message);

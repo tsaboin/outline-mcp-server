@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -26,7 +26,8 @@ toolRegistry.register('search_documents', {
         payload.limit = args.limit;
       }
 
-      const response = await outlineClient.post('/documents.search', payload);
+      const client = getOutlineClient();
+      const response = await client.post('/documents.search', payload);
       return {
         content: [
           { type: 'text', text: `documents: ${JSON.stringify(response.data.data)}` },

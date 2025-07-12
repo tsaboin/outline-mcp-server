@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -53,7 +53,8 @@ toolRegistry.register('list_documents', {
       }
 
       // Make the POST request to the documents.list endpoint
-      const response = await outlineClient.post('/documents.list', payload);
+      const client = getOutlineClient();
+      const response = await client.post('/documents.list', payload);
 
       // Transform the response to a more usable format
       const documents = response.data.data;

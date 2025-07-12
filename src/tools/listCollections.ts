@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -18,7 +18,8 @@ toolRegistry.register('list_collections', {
         payload.limit = args.limit;
       }
 
-      const response = await outlineClient.post('/collections.list', payload);
+      const client = getOutlineClient();
+      const response = await client.post('/collections.list', payload);
       return {
         content: [
           {

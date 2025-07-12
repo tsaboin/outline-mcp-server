@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -12,7 +12,8 @@ toolRegistry.register('delete_comment', {
   },
   async callback(args) {
     try {
-      const response = await outlineClient.post('/comments.delete', {
+      const client = getOutlineClient();
+      const response = await client.post('/comments.delete', {
         id: args.id,
       });
       return { content: [{ type: 'text', text: JSON.stringify(response.data.success) }] };

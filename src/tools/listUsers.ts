@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -65,7 +65,8 @@ toolRegistry.register('list_users', {
         payload.role = args.role;
       }
 
-      const response = await outlineClient.post('/users.list', payload);
+      const client = getOutlineClient();
+      const response = await client.post('/users.list', payload);
       return {
         content: [
           { type: 'text', text: `users: ${JSON.stringify(response.data.data)}` },

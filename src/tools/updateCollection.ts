@@ -1,5 +1,5 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { outlineClient } from '../outline/outlineClient.js';
+import { getOutlineClient } from '../outline/outlineClient.js';
 import toolRegistry from '../utils/toolRegistry.js';
 import z from 'zod';
 
@@ -39,7 +39,8 @@ toolRegistry.register('update_collection', {
         payload.color = args.color;
       }
 
-      const response = await outlineClient.post('/collections.update', payload);
+      const client = getOutlineClient();
+      const response = await client.post('/collections.update', payload);
       return { content: [{ type: 'text', text: JSON.stringify(response.data.data) }] };
     } catch (error: any) {
       console.error('Error updating collection:', error.message);
