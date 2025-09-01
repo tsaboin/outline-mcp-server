@@ -1,3 +1,10 @@
+## [5.5.5](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.4...v5.5.5) (2025-09-01)
+
+
+### Bug Fixes
+
+* **cd:** correctly mark build-all-assets script as prepare phase for semantic-release ([0a5dee5](https://github.com/mmmeff/outline-mcp-server/commit/0a5dee5209526b5f9f2bfa5d76479deea88ae8d5))
+
 ## [5.5.4](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.3...v5.5.4) (2025-09-01)
 
 
