@@ -1,3 +1,10 @@
+## [5.5.3](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.2...v5.5.3) (2025-09-01)
+
+
+### Reverts
+
+* Revert "fix(dxt): Attempt to fix outdated version numbers on published DXT files" ([a9e16d0](https://github.com/mmmeff/outline-mcp-server/commit/a9e16d0eefeedae0206f19f1c736c6dba30ba4d7))
+
 ## [5.5.2](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.1...v5.5.2) (2025-09-01)
 
 
