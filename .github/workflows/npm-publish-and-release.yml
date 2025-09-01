@@ -28,11 +28,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Build DXT
-        run: npm run build:dxt
-
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+
+      - name: Build DXT
+        run: npm run build:dxt 
