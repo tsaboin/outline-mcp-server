@@ -8,8 +8,8 @@ toolRegistry.register('list_documents', {
   name: 'list_documents',
   description: 'List documents in the Outline workspace with optional filters',
   inputSchema: {
+    query: z.string().describe('Search query to filter documents'),
     collectionId: z.string().describe('Filter by collection ID (optional)').optional(),
-    query: z.string().describe('Search query to filter documents (optional)').optional(),
     limit: z.number().describe('Maximum number of documents to return (optional)').optional(),
     offset: z.number().describe('Pagination offset (optional)').optional(),
     sort: z.string().describe('Field to sort by (e.g. "updatedAt") (optional)').optional(),
