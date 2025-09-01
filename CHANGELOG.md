@@ -1,3 +1,10 @@
+## [5.5.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.0...v5.5.1) (2025-09-01)
+
+
+### Bug Fixes
+
+* **tools:** Mark query as required on listDocuments ([ec7e9ab](https://github.com/mmmeff/outline-mcp-server/commit/ec7e9ab0f5f7b81003f27ca6a0c662a1c974efe0)), closes [#18](https://github.com/mmmeff/outline-mcp-server/issues/18)
+
 # [5.5.0](https://github.com/mmmeff/outline-mcp-server/compare/v5.4.1...v5.5.0) (2025-07-12)
 
 
