@@ -1,3 +1,11 @@
+## [5.5.4](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.3...v5.5.4) (2025-09-01)
+
+
+### Bug Fixes
+
+* **cd:** michael jackson script ([5d63ec6](https://github.com/mmmeff/outline-mcp-server/commit/5d63ec6a5ea791b949e2d7a8492e4dd57e78ebad))
+* **dxt:** Add DXT build as a semantic-release plugin ([668bad2](https://github.com/mmmeff/outline-mcp-server/commit/668bad219dd14cafe99c6ec83892cc9841b77518)), closes [#17](https://github.com/mmmeff/outline-mcp-server/issues/17)
+
 ## [5.5.3](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.2...v5.5.3) (2025-09-01)
 
 
