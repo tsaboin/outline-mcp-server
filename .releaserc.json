@@ -5,6 +5,7 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     "@semantic-release/npm",
+    "./scripts/build-all-assets.js",
     [
       "@semantic-release/github",
       {
