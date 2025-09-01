@@ -1,3 +1,10 @@
+## [5.5.2](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.1...v5.5.2) (2025-09-01)
+
+
+### Bug Fixes
+
+* **dxt:** Attempt to fix outdated version numbers on published DXT files ([2c3cb5c](https://github.com/mmmeff/outline-mcp-server/commit/2c3cb5c946408da53b16fe8771e8df6a68ae62ae)), closes [#17](https://github.com/mmmeff/outline-mcp-server/issues/17)
+
 ## [5.5.1](https://github.com/mmmeff/outline-mcp-server/compare/v5.5.0...v5.5.1) (2025-09-01)
 
 
