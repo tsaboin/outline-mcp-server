@@ -1,0 +1,15 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${OUTLINE_MCP_PORT:-6060}:6060'
+    environment:
+      OUTLINE_API_KEY: ${OUTLINE_API_KEY}
+      OUTLINE_API_URL: ${OUTLINE_API_URL}
+      OUTLINE_MCP_HOST: ${OUTLINE_MCP_HOST:-0.0.0.0}
+      OUTLINE_MCP_PORT: ${OUTLINE_MCP_PORT:-6060}
+    env_file:
+      - .env
+    restart: unless-stopped
