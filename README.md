@@ -135,6 +135,45 @@ Example queries your AI assistant can now handle:
 - "Update the content of a document"
 - "Add a comment to a document"
 
+## Docker Usage
+
+You can run the Outline MCP Server using Docker or Docker Compose for easy deployment.
+
+### 1. Prepare your `.env` file
+
+Copy `.env.example` to `.env` and fill in your Outline API key:
+
+```bash
+cp .env.example .env
+# Edit .env and set OUTLINE_API_KEY=your_outline_api_key_here
+```
+
+### 2. Build and run with Docker Compose (recommended)
+
+```bash
+docker-compose up --build
+```
+
+- The server will be available on port 6060 by default.
+- Environment variables are loaded from your `.env` file.
+
+### 3. Build and run manually with Docker
+
+```bash
+docker build -t outline-mcp-server .
+docker run --env-file .env -p 6060:6060 outline-mcp-server
+```
+
+- You can override environment variables at runtime with `-e` flags if needed.
+
+### 4. Customizing
+
+- To change the API URL, set `OUTLINE_API_URL` in your `.env` file or as an environment variable.
+- To change the port or host, set `OUTLINE_MCP_PORT` and `OUTLINE_MCP_HOST` in your `.env` file or as environment variables.
+- For more advanced setups, edit `docker-compose.yml` as needed.
+
+---
+
 ## Development
 
 ```bash
