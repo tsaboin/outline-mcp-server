@@ -11,6 +11,5 @@ WORKDIR /app
 COPY --from=build /app/build ./build
 COPY --from=build /app/package*.json ./
 RUN npm install --omit=dev --ignore-scripts
-COPY .env.example .
 EXPOSE 6060
 CMD ["node", "build/index.js"]
