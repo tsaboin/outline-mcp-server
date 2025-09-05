@@ -1,9 +1,6 @@
 # Multi-stage Dockerfile for outline-mcp-server
 FROM node:20-alpine AS build
 
-# Optional: Install bash for easier debugging
-RUN apk add --no-cache bash
-
 WORKDIR /app
 
 # Copy package files
@@ -13,16 +10,21 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Debug: Print directory structure
+# List contents (to make sure all files are copied)
 RUN ls -la
 
-# Debug: Run tsc manually to see exact error
-RUN npx tsc --noEmitOnError false
+# Manually run tsc and show output
+RUN npx tsc
 
-# Debug: Check if build/index.js exists
-RUN if [ ! -f "build/index.js" ]; then echo "❌ build/index.js not found after tsc"; else echo "✅ build/index.js exists"; fi
+# Check if output files were created
+RUN if [ -f "build/index.js" ]; then echo "✅ index.js exists"; else echo "❌ index.js missing"; fi
+RUN if [ -f "build/stdio.js" ]; then echo "✅ stdio.js exists"; else echo "❌ stdio.js missing"; fi
 
-# Run build script
+# Try to make binaries executable
+RUN if [ -f "build/index.js" ]; then chmod +x build/index.js; else echo "⚠️ Skipping chmod on index.js"; fi
+RUN if [ -f "build/stdio.js" ]; then chmod +x build/stdio.js; else echo "⚠️ Skipping chmod on stdio.js"; fi
+
+# Now run the build script
 RUN npm run build
 
 #################
